@@ -1,22 +1,12 @@
 <div class="row">
-  <!-- <div class="col">
-    <ol class="list-group">
-      @for (todo of todos; track todo) {
-        <li class="list-group-item">
-          {{todo.name}} : {{todo.content}}
-          <i (click)="deleteTodo(todo)" class="fa fa-trash" aria-hidden="true"></i>
-        </li>
-      }
-    </ol>
-  </div> -->
   <div style="display: flex; justify-content: space-between; align-items: center;">
     <input [(ngModel)]="todo.name" type="text" class="form-control" placeholder="name">
     <input [(ngModel)]="todo.content" type="text" class="form-control" placeholder="content">
     <select [(ngModel)]="todo.status" class="form-select">
-    <option value="waiting">Waiting</option>
-    <option value="in progress">In Progress</option>
-    <option value="done">Done</option>
-  </select>
+      <option value="waiting">Waiting</option>
+      <option value="in progress">In Progress</option>
+      <option value="done">Done</option>
+    </select>
     <button (click)="addTodo()" [disabled]="!todo.name.trim() || !todo.content.trim()" class="btn btn-primary m-2"
       style="background-color: red;">add</button>
   </div>
@@ -33,39 +23,60 @@
         <tr>
           <td style="width: 500px; height: 100px; vertical-align: top; overflow-y: auto;">
             <ul style="list-style: none;"> @for (todo of waitingTodos(); track todo) {
-              <li>
-                {{todo.name}} : {{todo.content}} : {{todo.status}}
+              <!-- <li>
+                {{todo.name}} : {{todo.content}}
                 <i (click)="deleteTodo(todo)" class="fa fa-trash" aria-hidden="true"></i>
-                <select [(ngModel)]="todo.status" (ngModelChange)="updateTodoStatus(todo.id, $event)"  class="form-select form-select-sm mt-1">
+                <select [ngModel]="todo.status" (ngModelChange)="updateTodoStatus(todo.id, $event)"  class="form-select form-select-sm mt-1">
                     <option value="waiting">Waiting</option>
                     <option value="in progress">In Progress</option>
                     <option value="done">Done</option>
                   </select>
-              </li>
+              </li> -->
+              <app-todo-element [todo]="todo" [onDelete]="deleteTodo.bind(this)"
+                [onStatusChange]="updateTodoStatus.bind(this)">
+              </app-todo-element>
               }
             </ul>
           </td>
           <td style="width: 500px; height: 100px; vertical-align: top; overflow-y: auto;">
             <ul style="list-style: none;"> @for (todo of inProgressTodos(); track todo) {
-              <li>
-                {{todo.name}} : {{todo.content}} : {{todo.status}}
+              <!-- <li>
+                {{todo.name}} : {{todo.content}}
                 <i (click)="deleteTodo(todo)" class="fa fa-trash" aria-hidden="true"></i>
-              </li>
+                <select [ngModel]="todo.status" (ngModelChange)="updateTodoStatus(todo.id, $event)"  class="form-select form-select-sm mt-1">
+                    <option value="waiting">Waiting</option>
+                    <option value="in progress">In Progress</option>
+                    <option value="done">Done</option>
+                  </select>
+              </li> -->
+              <app-todo-element [todo]="todo" [onDelete]="deleteTodo.bind(this)"
+                [onStatusChange]="updateTodoStatus.bind(this)">
+              </app-todo-element>
               }
             </ul>
           </td>
           <td style="width: 500px; height: 100px; vertical-align: top; overflow-y: auto;">
             <ul style="list-style: none;"> @for (todo of doneTodos(); track todo) {
-              <li>
-                {{todo.name}} : {{todo.content}} : {{todo.status}}
+              <!-- <li>
+                {{todo.name}} : {{todo.content}}
                 <i (click)="deleteTodo(todo)" class="fa fa-trash" aria-hidden="true"></i>
-              </li>
+                <select [ngModel]="todo.status" (ngModelChange)="updateTodoStatus(todo.id, $event)"  class="form-select form-select-sm mt-1">
+                    <option value="waiting">Waiting</option>
+                    <option value="in progress">In Progress</option>
+                    <option value="done">Done</option>
+                  </select>
+              </li> -->
+              <app-todo-element [todo]="todo" [onDelete]="deleteTodo.bind(this)"
+                [onStatusChange]="updateTodoStatus.bind(this)">
+              </app-todo-element>
               }
             </ul>
           </td>
         </tr>
       </tbody>
     </table>
+
+
 
   </div>
 </div>

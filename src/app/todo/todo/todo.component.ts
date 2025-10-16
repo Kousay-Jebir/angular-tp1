@@ -3,6 +3,7 @@ import { Todo } from '../model/todo';
 import { TodoService } from '../service/todo.service';
 
 import { FormsModule } from '@angular/forms';
+import { TodoElementComponent } from './todo-element.component';
 
 @Component({
     selector: 'app-todo',
@@ -10,13 +11,14 @@ import { FormsModule } from '@angular/forms';
     styleUrls: ['./todo.component.css'],
     providers: [TodoService],
     standalone: true,
-    imports: [FormsModule],
+    imports: [FormsModule,TodoElementComponent],
 })
 export class TodoComponent {
   private todoService = inject(TodoService);
 
   // todos = signal<Todo[]>([]);
   todo = new Todo();
+
 
   /** Inserted by Angular inject() migration for backwards compatibility */
   // constructor(...args: unknown[]);
