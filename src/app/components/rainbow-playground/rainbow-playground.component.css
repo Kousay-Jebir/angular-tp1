@@ -1,0 +1,32 @@
+.container {
+  max-width: 640px;
+  margin: 24px auto;
+  padding: 16px;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.title {
+  margin: 0 0 8px;
+  font-size: 22px;
+}
+
+.lead {
+  margin: 0 0 16px;
+  color: #444;
+}
+
+.label {
+  display: block;
+  margin: 16px 0 6px;
+  font-weight: 600;
+}
+
+.input {
+  display: block;
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 6px;
+  border: 1px solid #ccc; /* will be overridden by the directive on keyup */
+  outline: none; /* the directive also removes outline for consistency */
+  font-size: 16px;
+}

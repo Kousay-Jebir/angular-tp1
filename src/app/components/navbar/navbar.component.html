@@ -22,6 +22,12 @@
       <div class="navbar-nav">
         <a
           class="nav-link"
+          [routerLink]="['rainbow-playground']"
+          routerLinkActive="active text-primary"
+          >Rainbow Playground</a
+        >
+        <!-- <a
+          class="nav-link"
           aria-current="page"
           [routerLink]="['']"
           [routerLinkActiveOptions]="{ exact: true }"
@@ -65,7 +71,7 @@
           [routerLink]="['rh']"
           routerLinkActive="active text-primary"
           >Rh</a
-        >
+        >-->
         <a
           *ngIf="!authService.isAuthenticated()"
           class="nav-link"
