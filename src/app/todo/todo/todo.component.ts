@@ -26,6 +26,8 @@ export class TodoComponent {
     todos = this.todoService.todos;
 
   addTodo() {
+    const id = crypto.randomUUID();
+    this.todo.id=id;
     this.todoService.addTodo(this.todo);
     // this.todos.set(this.todoService.getTodos())
     // this.todos.update(list => [...list, this.todo]);
@@ -35,7 +37,7 @@ export class TodoComponent {
   deleteTodo(todo: Todo) {
     this.todoService.deleteTodo(todo);
     // this.todos.set(this.todos().splice(0, 1))
-    // console.log(todo)
+    console.log(todo)
 
   }
 
