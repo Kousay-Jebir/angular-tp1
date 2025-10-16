@@ -12,31 +12,50 @@
   <div style="display: flex; justify-content: space-between; align-items: center;">
     <input [(ngModel)]="todo.name" type="text" class="form-control" placeholder="name">
     <input [(ngModel)]="todo.content" type="text" class="form-control" placeholder="content">
-    <button (click)="addTodo()" [disabled]="!todo.name.trim() || !todo.content.trim()"
-    class="btn btn-primary m-2" style="background-color: red;">add</button>
+    <button (click)="addTodo()" [disabled]="!todo.name.trim() || !todo.content.trim()" class="btn btn-primary m-2"
+      style="background-color: red;">add</button>
   </div>
   <div class="row">
     <table class="table table-bordered text-center">
-  <thead class="table-light">
-    <tr>
-      <th>Waiting</th>
-      <th>In Progress</th>
-      <th>Done</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td style="width: 500px; height: 100px; vertical-align: top; overflow-y: auto;"><ul style="list-style: none;">      @for (todo of todos; track todo) {
-        <li>
-          {{todo.name}} : {{todo.content}}
-          <i (click)="deleteTodo(todo)" class="fa fa-trash" aria-hidden="true"></i>
-        </li>
-      }</ul></td>
-      <td style="width: 500px; height: 100px; vertical-align: top; overflow-y: auto;">Task 4</td>
-      <td style="width: 500px; height: 100px; vertical-align: top; overflow-y: auto;">Task 7</td>
-    </tr>
-  </tbody>
-</table>
+      <thead class="table-light">
+        <tr>
+          <th>Waiting</th>
+          <th>In Progress</th>
+          <th>Done</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td style="width: 500px; height: 100px; vertical-align: top; overflow-y: auto;">
+            <ul style="list-style: none;"> @for (todo of todos; track todo) {
+              <li>
+                {{todo.name}} : {{todo.content}}
+                <i (click)="deleteTodo(todo)" class="fa fa-trash" aria-hidden="true"></i>
+              </li>
+              }
+            </ul>
+          </td>
+          <td style="width: 500px; height: 100px; vertical-align: top; overflow-y: auto;">
+            <ul style="list-style: none;"> @for (todo of todos; track todo) {
+              <li>
+                {{todo.name}} : {{todo.content}}
+                <i (click)="deleteTodo(todo)" class="fa fa-trash" aria-hidden="true"></i>
+              </li>
+              }
+            </ul>
+          </td>
+          <td style="width: 500px; height: 100px; vertical-align: top; overflow-y: auto;">
+            <ul style="list-style: none;"> @for (todo of todos; track todo) {
+              <li>
+                {{todo.name}} : {{todo.content}}
+                <i (click)="deleteTodo(todo)" class="fa fa-trash" aria-hidden="true"></i>
+              </li>
+              }
+            </ul>
+          </td>
+        </tr>
+      </tbody>
+    </table>
 
   </div>
 </div>
