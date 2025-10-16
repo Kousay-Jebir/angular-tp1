@@ -23,15 +23,7 @@
         <tr>
           <td style="width: 500px; height: 100px; vertical-align: top; overflow-y: auto;">
             <ul style="list-style: none;"> @for (todo of waitingTodos(); track todo) {
-              <!-- <li>
-                {{todo.name}} : {{todo.content}}
-                <i (click)="deleteTodo(todo)" class="fa fa-trash" aria-hidden="true"></i>
-                <select [ngModel]="todo.status" (ngModelChange)="updateTodoStatus(todo.id, $event)"  class="form-select form-select-sm mt-1">
-                    <option value="waiting">Waiting</option>
-                    <option value="in progress">In Progress</option>
-                    <option value="done">Done</option>
-                  </select>
-              </li> -->
+
               <app-todo-element [todo]="todo" [onDelete]="deleteTodo.bind(this)"
                 [onStatusChange]="updateTodoStatus.bind(this)">
               </app-todo-element>
@@ -40,15 +32,6 @@
           </td>
           <td style="width: 500px; height: 100px; vertical-align: top; overflow-y: auto;">
             <ul style="list-style: none;"> @for (todo of inProgressTodos(); track todo) {
-              <!-- <li>
-                {{todo.name}} : {{todo.content}}
-                <i (click)="deleteTodo(todo)" class="fa fa-trash" aria-hidden="true"></i>
-                <select [ngModel]="todo.status" (ngModelChange)="updateTodoStatus(todo.id, $event)"  class="form-select form-select-sm mt-1">
-                    <option value="waiting">Waiting</option>
-                    <option value="in progress">In Progress</option>
-                    <option value="done">Done</option>
-                  </select>
-              </li> -->
               <app-todo-element [todo]="todo" [onDelete]="deleteTodo.bind(this)"
                 [onStatusChange]="updateTodoStatus.bind(this)">
               </app-todo-element>
@@ -57,15 +40,7 @@
           </td>
           <td style="width: 500px; height: 100px; vertical-align: top; overflow-y: auto;">
             <ul style="list-style: none;"> @for (todo of doneTodos(); track todo) {
-              <!-- <li>
-                {{todo.name}} : {{todo.content}}
-                <i (click)="deleteTodo(todo)" class="fa fa-trash" aria-hidden="true"></i>
-                <select [ngModel]="todo.status" (ngModelChange)="updateTodoStatus(todo.id, $event)"  class="form-select form-select-sm mt-1">
-                    <option value="waiting">Waiting</option>
-                    <option value="in progress">In Progress</option>
-                    <option value="done">Done</option>
-                  </select>
-              </li> -->
+
               <app-todo-element [todo]="todo" [onDelete]="deleteTodo.bind(this)"
                 [onStatusChange]="updateTodoStatus.bind(this)">
               </app-todo-element>
