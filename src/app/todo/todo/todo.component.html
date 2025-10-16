@@ -32,27 +32,27 @@
       <tbody>
         <tr>
           <td style="width: 500px; height: 100px; vertical-align: top; overflow-y: auto;">
-            <ul style="list-style: none;"> @for (todo of todos(); track todo) {
+            <ul style="list-style: none;"> @for (todo of waitingTodos(); track todo) {
               <li>
-                {{todo.name}} : {{todo.content}}
+                {{todo.name}} : {{todo.content}} : {{todo.status}}
                 <i (click)="deleteTodo(todo)" class="fa fa-trash" aria-hidden="true"></i>
               </li>
               }
             </ul>
           </td>
           <td style="width: 500px; height: 100px; vertical-align: top; overflow-y: auto;">
-            <ul style="list-style: none;"> @for (todo of todos(); track todo) {
+            <ul style="list-style: none;"> @for (todo of inProgressTodos(); track todo) {
               <li>
-                {{todo.name}} : {{todo.content}}
+                {{todo.name}} : {{todo.content}} : {{todo.status}}
                 <i (click)="deleteTodo(todo)" class="fa fa-trash" aria-hidden="true"></i>
               </li>
               }
             </ul>
           </td>
           <td style="width: 500px; height: 100px; vertical-align: top; overflow-y: auto;">
-            <ul style="list-style: none;"> @for (todo of todos(); track todo) {
+            <ul style="list-style: none;"> @for (todo of doneTodos(); track todo) {
               <li>
-                {{todo.name}} : {{todo.content}}
+                {{todo.name}} : {{todo.content}} : {{todo.status}}
                 <i (click)="deleteTodo(todo)" class="fa fa-trash" aria-hidden="true"></i>
               </li>
               }

@@ -15,21 +15,28 @@ import { FormsModule } from '@angular/forms';
 export class TodoComponent {
   private todoService = inject(TodoService);
 
-  todos = signal<Todo[]>([]);
+  // todos = signal<Todo[]>([]);
   todo = new Todo();
 
   /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-  constructor() {
-    this.todos.set(this.todoService.getTodos());
-  }
+  // constructor(...args: unknown[]);
+  // constructor() {
+  //   this.todos.set(this.todoService.getTodos());
+  // }
+    todos = this.todoService.todos;
+
   addTodo() {
     this.todoService.addTodo(this.todo);
+    // this.todos.set(this.todoService.getTodos())
+    // this.todos.update(list => [...list, this.todo]);
     this.todo = new Todo();
   }
 
   deleteTodo(todo: Todo) {
     this.todoService.deleteTodo(todo);
+    // this.todos.set(this.todos().splice(0, 1))
+    // console.log(todo)
+
   }
 
   waitingTodos = computed(() => this.todos().filter(t => t.status === 'waiting'));
