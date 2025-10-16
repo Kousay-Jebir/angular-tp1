@@ -36,8 +36,13 @@ export class TodoComponent {
 
   deleteTodo(todo: Todo) {
     this.todoService.deleteTodo(todo);
-    // this.todos.set(this.todos().splice(0, 1))
     console.log(todo)
+
+  }
+
+  updateTodoStatus(todoId:string,newStatus:string){
+    this.todoService.updateTodoStatus(todoId,newStatus);
+
 
   }
 

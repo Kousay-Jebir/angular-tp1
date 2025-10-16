@@ -36,6 +36,11 @@
               <li>
                 {{todo.name}} : {{todo.content}} : {{todo.status}}
                 <i (click)="deleteTodo(todo)" class="fa fa-trash" aria-hidden="true"></i>
+                <select [(ngModel)]="todo.status" (ngModelChange)="updateTodoStatus(todo.id, $event)"  class="form-select form-select-sm mt-1">
+                    <option value="waiting">Waiting</option>
+                    <option value="in progress">In Progress</option>
+                    <option value="done">Done</option>
+                  </select>
               </li>
               }
             </ul>

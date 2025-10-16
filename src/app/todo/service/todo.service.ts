@@ -36,6 +36,18 @@ export class TodoService {
     // this.todos.push(todo);
     this.todos.update(list => [...list, todo]);
   }
+  /**
+   *Elle permet de mettre a jour todo
+   *
+   * @param todo: Todo
+   *
+   */
+  updateTodoStatus(todoId:string,newStatus:string){
+      this.todos.update(list => 
+    list.map(t => t.id == todoId ? { ...t, status: newStatus } : t)
+  );
+
+  }
 
   /**
    * Delete le todo s'il existe
