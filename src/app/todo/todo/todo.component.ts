@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { Todo } from '../model/todo';
 import { TodoService } from '../service/todo.service';
 
@@ -15,13 +15,13 @@ import { FormsModule } from '@angular/forms';
 export class TodoComponent {
   private todoService = inject(TodoService);
 
-  todos: Todo[] = [];
+  todos = signal<Todo[]>([]);
   todo = new Todo();
 
   /** Inserted by Angular inject() migration for backwards compatibility */
   constructor(...args: unknown[]);
   constructor() {
-    this.todos = this.todoService.getTodos();
+    this.todos.set(this.todoService.getTodos());
   }
   addTodo() {
     this.todoService.addTodo(this.todo);
@@ -31,4 +31,8 @@ export class TodoComponent {
   deleteTodo(todo: Todo) {
     this.todoService.deleteTodo(todo);
   }
+
+  waitingTodos = computed(() => this.todos().filter(t => t.status === 'waiting'));
+  inProgressTodos = computed(() => this.todos().filter(t => t.status === 'in progress'));
+  doneTodos = computed(() => this.todos().filter(t => t.status === 'done'));
 }

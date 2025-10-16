@@ -12,6 +12,11 @@
   <div style="display: flex; justify-content: space-between; align-items: center;">
     <input [(ngModel)]="todo.name" type="text" class="form-control" placeholder="name">
     <input [(ngModel)]="todo.content" type="text" class="form-control" placeholder="content">
+    <select [(ngModel)]="todo.status" class="form-select">
+    <option value="waiting">Waiting</option>
+    <option value="in progress">In Progress</option>
+    <option value="done">Done</option>
+  </select>
     <button (click)="addTodo()" [disabled]="!todo.name.trim() || !todo.content.trim()" class="btn btn-primary m-2"
       style="background-color: red;">add</button>
   </div>
@@ -27,7 +32,7 @@
       <tbody>
         <tr>
           <td style="width: 500px; height: 100px; vertical-align: top; overflow-y: auto;">
-            <ul style="list-style: none;"> @for (todo of todos; track todo) {
+            <ul style="list-style: none;"> @for (todo of todos(); track todo) {
               <li>
                 {{todo.name}} : {{todo.content}}
                 <i (click)="deleteTodo(todo)" class="fa fa-trash" aria-hidden="true"></i>
@@ -36,7 +41,7 @@
             </ul>
           </td>
           <td style="width: 500px; height: 100px; vertical-align: top; overflow-y: auto;">
-            <ul style="list-style: none;"> @for (todo of todos; track todo) {
+            <ul style="list-style: none;"> @for (todo of todos(); track todo) {
               <li>
                 {{todo.name}} : {{todo.content}}
                 <i (click)="deleteTodo(todo)" class="fa fa-trash" aria-hidden="true"></i>
@@ -45,7 +50,7 @@
             </ul>
           </td>
           <td style="width: 500px; height: 100px; vertical-align: top; overflow-y: auto;">
-            <ul style="list-style: none;"> @for (todo of todos; track todo) {
+            <ul style="list-style: none;"> @for (todo of todos(); track todo) {
               <li>
                 {{todo.name}} : {{todo.content}}
                 <i (click)="deleteTodo(todo)" class="fa fa-trash" aria-hidden="true"></i>
