@@ -25,7 +25,7 @@ export class TodoComponent {
   // constructor() {
   //   this.todos.set(this.todoService.getTodos());
   // }
-    todos = this.todoService.todos;
+    todos = this.todoService.getTodos();
 
   addTodo() {
     const id = crypto.randomUUID();

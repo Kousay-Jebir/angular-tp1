@@ -1,4 +1,4 @@
-import { Injectable, inject, signal } from '@angular/core';
+import { Injectable, WritableSignal, inject, signal } from '@angular/core';
 import { Todo } from '../model/todo';
 import { LoggerService } from '../../services/logger.service';
 
@@ -10,7 +10,7 @@ let n = 1;
 export class TodoService {
   private loggerService = inject(LoggerService);
 
-  public todos = signal<Todo[]>([]);
+  private todos = signal<Todo[]>([]);
   
 
   /** Inserted by Angular inject() migration for backwards compatibility */
@@ -22,8 +22,8 @@ export class TodoService {
    *
    * @returns Todo[]
    */
-  getTodos(): Todo[] {
-    return this.todos();
+  getTodos(): WritableSignal<Todo[]> {
+    return this.todos;
   }
 
   /**
