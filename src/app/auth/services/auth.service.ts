@@ -12,32 +12,13 @@ import { ConnectedUser } from '../user/user';
 export class AuthService {
   private http = inject(HttpClient);
 
-//////////////////////////////////////////////////////////////
-user = signal<ConnectedUser|null>(null)
-token = signal<string|null>(null)
+  //////////////////////////////////////////////////////////////
+  user = signal<ConnectedUser | null>(null);
+  token = signal<string | null>(null);
 
-isAuthenticated = computed(()=>this.token()!=null)
+  isAuthenticated = computed(() => this.token() != null);
 
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
-
-//////////////////////////////////////////////////////////////
-
-
-
-
+  //////////////////////////////////////////////////////////////
 
   /** Inserted by Angular inject() migration for backwards compatibility */
   constructor(...args: unknown[]);
@@ -49,7 +30,11 @@ isAuthenticated = computed(()=>this.token()!=null)
 
     if (savedToken) {
       this.token.set(savedToken);
-      this.user.set(savedUserId && savedUserEmail ? {id:savedUserId,email:savedUserEmail} : null);
+      this.user.set(
+        savedUserId && savedUserEmail
+          ? { id: savedUserId, email: savedUserEmail }
+          : null
+      );
     }
   }
 
@@ -58,13 +43,28 @@ isAuthenticated = computed(()=>this.token()!=null)
   }
   ///////////////////////////////////////////////////
 
-  loginTest(credentials:CredentialsDto): boolean{
-      if(credentials.email=="chedli@email.com" && credentials.password=="azerty"){
-        return true
-      }
-      return false
+  loginTest(credentials: CredentialsDto): boolean {
+    if (this.verifyCredentials(credentials)) {
+      this.token.set('test_token_value');
+      this.user.set({ email: credentials.email, id: 1 });
+      localStorage.setItem('token', 'test_token_value');
+      localStorage.setItem('userId', '1');
+      localStorage.setItem('userEmail', credentials.email);
+      return true
+    }
+    return false;
   }
-//////////////////////////////////////////////////////////////////////////
+
+  verifyCredentials(credentials: CredentialsDto): boolean {
+    if (
+      credentials.email == 'chedli@email.com' &&
+      credentials.password == 'azerty'
+    ) {
+      return true;
+    }
+    return false;
+  }
+  //////////////////////////////////////////////////////////////////////////
   // isAuthenticated(): boolean {
   //   return !!localStorage.getItem('token');
   // }

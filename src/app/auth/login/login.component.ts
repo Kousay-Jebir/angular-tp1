@@ -40,12 +40,6 @@ export class LoginComponent {
   }
   loginTest(credentials: CredentialsDto) {
     if (this.authService.loginTest(credentials)) {
-      this.authService.token.set('test_token_value');
-      this.authService.user.set({ email: credentials.email, id: 1 });
-      localStorage.setItem('token', 'test_token_value');
-      localStorage.setItem('userId', '1');
-      localStorage.setItem('userEmail', credentials.email);
-
       this.toastr.success(`Bienvenu chez vous :)`);
       this.router.navigate([APP_ROUTES.cv]);
     } else {
