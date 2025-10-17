@@ -6,25 +6,7 @@ import { FormsModule } from '@angular/forms';
   selector: 'app-todo-element',
   standalone: true,
   imports: [FormsModule],
-  template: `
-    <ul style="list-style: none;">
-      @for (todo of todos; track todo) {
-      <li>
-        {{ todo.name }} : {{ todo.content }}
-        <i (click)="onDelete(todo)" class="fa fa-trash" aria-hidden="true"></i>
-        <select
-          [ngModel]="todo.status"
-          (ngModelChange)="onStatusChange(todo.id, $event)"
-          class="form-select form-select-sm mt-1"
-        >
-          <option value="waiting">Waiting</option>
-          <option value="in progress">In Progress</option>
-          <option value="done">Done</option>
-        </select>
-      </li>
-      }
-    </ul>
-  `,
+  templateUrl:'./todo-element.component.html'
 })
 export class TodoElementComponent {
   @Input() todos!: Todo[];
