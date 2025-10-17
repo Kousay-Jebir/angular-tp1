@@ -16,7 +16,7 @@ export class AuthService {
 user = signal<ConnectedUser|null>(null)
 token = signal<string|null>(null)
 
-isAuthenticated = signal<boolean>(false)
+isAuthenticated = computed(()=>this.token()!=null)
 
 
   
@@ -74,7 +74,7 @@ isAuthenticated = signal<boolean>(false)
      
         this.token.set("this_is_a_test_token");
         this.user.set({email:credentials.email,id:1})
-        this.isAuthenticated.set(true)
+        // this.isAuthenticated.set(true)
 
         localStorage.setItem('token', "this_is_a_test_token");
         localStorage.setItem('userId', "1");
@@ -93,7 +93,7 @@ isAuthenticated = signal<boolean>(false)
   logout() {
     this.token.set(null);
     this.user.set(null);
-    this.isAuthenticated.set(false)
+    // this.isAuthenticated.set(false)
     localStorage.clear();
   }
 }
