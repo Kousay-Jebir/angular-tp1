@@ -1,27 +1,36 @@
-import { Component, Input, Output, EventEmitter, inject } from "@angular/core";
-import { Cv } from "../model/cv";
-import { CvService } from "../services/cv.service";
-import { NgStyle } from "@angular/common";
-import { DefaultImagePipe } from "../pipes/default-image.pipe";
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  ChangeDetectionStrategy,
+} from '@angular/core';
+import { NgStyle } from '@angular/common';
+import { Cv } from '../model/cv';
+import { DefaultImagePipe } from '../pipes/default-image.pipe';
 
 @Component({
-    selector: "app-item",
-    templateUrl: "./item.component.html",
-    styleUrls: ["./item.component.css"],
-    standalone: true,
-    imports: [NgStyle, DefaultImagePipe],
+  selector: 'app-item',
+  standalone: true,
+  imports: [NgStyle, DefaultImagePipe],
+  templateUrl: './item.component.html',
+  styleUrls: ['./item.component.css'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ItemComponent {
-  private cvService = inject(CvService);
-
   @Input({ required: true }) cv!: Cv;
   @Input() size = 50;
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-  constructor() {}
+  @Output() selectCv = new EventEmitter<Cv>();
 
   onSelectCv() {
-    this.cvService.selectCv(this.cv);
+    this.selectCv.emit(this.cv);
+  }
+
+  onKeydown(e: KeyboardEvent) {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      this.onSelectCv();
+    }
   }
 }

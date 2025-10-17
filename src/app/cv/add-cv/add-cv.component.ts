@@ -1,85 +1,89 @@
-import { Component, inject } from "@angular/core";
-import { AbstractControl, FormBuilder, Validators, FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { CvService } from "../services/cv.service";
-import { Router } from "@angular/router";
-import { ToastrService } from "ngx-toastr";
-import { APP_ROUTES } from "src/config/routes.config";
-import { Cv } from "../model/cv";
-import { JsonPipe } from "@angular/common";
+import { Component, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import {
+  AbstractControl,
+  FormBuilder,
+  Validators,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
+
+import { CvService } from '../services/cv.service';
+import { Cv } from '../model/cv';
+import { APP_ROUTES } from 'src/config/routes.config';
+import { JsonPipe } from '@angular/common';
+
+// Optional: keep your form-level rule if you need it
+function cinAndAgeValidator(group: AbstractControl) {
+  const cin = group.get('cin')?.value as string;
+  const age = Number(group.get('age')?.value);
+  if (cin && age && age < 18) return { cinFirstCars: true };
+  return null;
+}
 
 @Component({
-    selector: "app-add-cv",
-    templateUrl: "./add-cv.component.html",
-    styleUrls: ["./add-cv.component.css"],
-    standalone: true,
-    imports: [
-    FormsModule,
-    ReactiveFormsModule,
-    JsonPipe
-],
+  selector: 'app-add-cv',
+  standalone: true,
+  templateUrl: './add-cv.component.html',
+  styleUrls: ['./add-cv.component.css'],
+  imports: [CommonModule, ReactiveFormsModule, JsonPipe],
 })
 export class AddCvComponent {
   private cvService = inject(CvService);
   private router = inject(Router);
   private toastr = inject(ToastrService);
-  private formBuilder = inject(FormBuilder);
+  private fb = inject(FormBuilder);
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-
-  constructor() {}
-
-  form = this.formBuilder.group(
+  form = this.fb.group(
     {
-      name: ["", Validators.required],
-      firstname: ["", Validators.required],
-      path: [""],
-      job: ["", Validators.required],
-      cin: [
-        "",
-        {
-          validators: [Validators.required, Validators.pattern("[0-9]{8}")],
-        },
-      ],
-      age: [
-        0,
-        {
-          validators: [Validators.required],
-        },
-      ],
+      name: ['', Validators.required],
+      firstname: ['', Validators.required],
+      path: [''],
+      job: ['', Validators.required],
+      cin: ['', [Validators.required, Validators.pattern(/^\d{8}$/)]],
+      age: [0, [Validators.required, Validators.min(0)]],
     },
+    { validators: cinAndAgeValidator }
   );
 
-  addCv() {
-    this.cvService.addCv(this.form.value as Cv).subscribe({
-      next: (cv) => {
-        this.router.navigate([APP_ROUTES.cv]);
-        this.toastr.success(`Le cv ${cv.firstname} ${cv.name}`);
-      },
-      error: (err) => {
-        this.toastr.error(
-          `Une erreur s'est produite, Veuillez contacter l'admin`
-        );
-      },
-    });
+  // Promise-based submit, compatible with your new service
+  async addCv() {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+    try {
+      // assuming your new service method is Promise-based:
+      // e.g., addCv(cv: Cv): Promise<Cv>
+      const created = await this.cvService.addCv(this.form.value as Cv);
+      this.toastr.success(
+        `Le CV ${created.firstname} ${created.name} a été ajouté`
+      );
+      await this.router.navigate([APP_ROUTES.cv]);
+    } catch {
+      this.toastr.error(
+        `Une erreur s'est produite. Veuillez contacter l'admin.`
+      );
+    }
   }
 
   get name(): AbstractControl {
-    return this.form.get("name")!;
+    return this.form.get('name')!;
   }
-  get firstname() {
-    return this.form.get("firstname");
+  get firstname(): AbstractControl {
+    return this.form.get('firstname')!;
   }
   get age(): AbstractControl {
-    return this.form.get("age")!;
+    return this.form.get('age')!;
   }
-  get job() {
-    return this.form.get("job");
+  get job(): AbstractControl {
+    return this.form.get('job')!;
   }
-  get path() {
-    return this.form.get("path");
+  get path(): AbstractControl {
+    return this.form.get('path')!;
   }
   get cin(): AbstractControl {
-    return this.form.get("cin")!;
+    return this.form.get('cin')!;
   }
 }

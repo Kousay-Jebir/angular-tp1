@@ -1,139 +1,86 @@
-import { Injectable, inject } from "@angular/core";
-import { Cv } from "../model/cv";
-import { Observable, Subject } from "rxjs";
-import { HttpClient, HttpParams } from "@angular/common/http";
-import { API } from "../../../config/api.config";
+// src/app/cv/services/cv.service.ts
+import { Injectable, signal, inject } from '@angular/core';
+import { Cv } from '../model/cv';
+import { API } from '../../../config/api.config';
 
-@Injectable({
-  providedIn: "root",
-})
+@Injectable({ providedIn: 'root' })
 export class CvService {
-  private http = inject(HttpClient);
+  // Shared selection across the app, signal not RxJS
+  selectedCv = signal<Cv | null>(null);
 
-  private cvs: Cv[] = [];
-  /**
-   * Le subject permettant de créer le flux des cvs sélectionnés
-   */
-  #selectCvSuject$ = new Subject<Cv>();
-  /**
-   * Le flux des cvs sélectionnés
-   */
-  selectCv$ = this.#selectCvSuject$.asObservable();
+  // Local fake cache for fallback
+  private fake: Cv[] = [
+    new Cv(1, 'aymen', 'sellaouti', 'teacher', 'as.jpg', '1234', 40),
+    new Cv(2, 'skander', 'sellaouti', 'enfant', '       ', '1234', 4),
+  ];
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-  constructor() {
-    this.cvs = [
-      new Cv(1, "aymen", "sellaouti", "teacher", "as.jpg", "1234", 40),
-      new Cv(2, "skander", "sellaouti", "enfant", "       ", "1234", 4),
-    ];
-  }
-
-  /**
-   *
-   * Retourne un liste fictive de cvs
-   *
-   * @returns CV[]
-   *
-   */
+  // Helpers
   getFakeCvs(): Cv[] {
-    return this.cvs;
+    return this.fake;
+  }
+  selectCv(cv: Cv | null) {
+    this.selectedCv.set(cv);
   }
 
-  /**
-   *
-   * Retourne la liste des cvs de l'API
-   *
-   * @returns CV[]
-   *
-   */
-  getCvs(): Observable<Cv[]> {
-    return this.http.get<Cv[]>(API.cv);
+  // Core HTTP helper (native fetch, no RxJS)
+  private async request<T>(url: string, init?: RequestInit): Promise<T> {
+    const res = await fetch(url, {
+      headers: { 'Content-Type': 'application/json' },
+      ...init,
+    });
+    if (!res.ok) {
+      const text = await res.text().catch(() => '');
+      throw new Error(text || `HTTP ${res.status}`);
+    }
+    return (await res.json()) as T;
   }
 
-  /**
-   *
-   * supprime un cv par son id de l'API
-   *
-   * @param id: number
-   * @returns CV[]
-   *
-   */
-  deleteCvById(id: number): Observable<any> {
-    return this.http.delete<any>(API.cv + id);
+  // API methods, all Promise-based
+  async getCvs(): Promise<Cv[]> {
+    return this.request<Cv[]>(API.cv);
   }
 
-  addCv(cv: Cv): Observable<Cv> {
-    return this.http.post<any>(API.cv, cv);
+  async getCvById(id: number): Promise<Cv> {
+    return this.request<Cv>(API.cv + id);
   }
 
-  /**
-   *
-   * Retourne un cv par son id de l'API
-   *
-   * @param id: number
-   * @returns CV[]
-   *
-   */
-  getCvById(id: number): Observable<Cv> {
-    return this.http.get<Cv>(API.cv + id);
+  async addCv(cv: Cv): Promise<Cv> {
+    return this.request<Cv>(API.cv, {
+      method: 'POST',
+      body: JSON.stringify(cv),
+    });
   }
 
-  /**
-   *
-   * Cherche un cv avec son id dans lai liste fictive de cvs
-   *
-   * @param id
-   * @returns Cv | null
-   */
-  findCvById(id: number): Cv | null {
-    return this.cvs.find((cv) => cv.id == id) ?? null;
+  async deleteCvById(id: number): Promise<void> {
+    await this.request(API.cv + id, { method: 'DELETE' });
   }
 
-  /**
-   *
-   * Supprime un cv s'il le trouve
-   *
-   * @param cv : Cv
-   * @returns boolean
-   */
-  deleteCv(cv: Cv): boolean {
-    const index = this.cvs.indexOf(cv);
-    if (index > -1) {
-      this.cvs.splice(index, 1);
+  async selectByName(name: string): Promise<Cv[]> {
+    const filter = encodeURIComponent(
+      JSON.stringify({ where: { name: { like: `%${name}%` } } })
+    );
+    return this.request<Cv[]>(`${API.cv}?filter=${filter}`);
+  }
+
+  async selectByProperty(property: string, value: string): Promise<Cv[]> {
+    const filter = encodeURIComponent(
+      JSON.stringify({ where: { [property]: value } })
+    );
+    return this.request<Cv[]>(`${API.cv}?filter=${filter}`);
+  }
+
+  // Optional: find in local fake cache
+  findCvByIdLocal(id: number): Cv | null {
+    return this.fake.find((cv) => cv.id === id) ?? null;
+  }
+
+  // Optional: delete in local fake cache
+  deleteCvLocal(cv: Cv): boolean {
+    const i = this.fake.indexOf(cv);
+    if (i > -1) {
+      this.fake.splice(i, 1);
       return true;
     }
     return false;
-  }
-
-  /**
-   * Recherche les cvs dont le name contient la chaine name passée en paramètre
-   * @param name : string
-   * @returns cvs Cv[]
-   */
-  selectByName(name: string) {
-    const search = `{"where":{"name":{"like":"%${name}%"}}}`;
-    const params = new HttpParams().set("filter", search);
-    return this.http.get<any>(API.cv, { params });
-  }
-  /**
-   * Recherche les cvs dont la valeur est égale à la chaine passée en paramètre
-   * @param property : string, la propriété sur laquelle on va requeter
-   * @param value : string, la valeur de la propriété sur laquelle on va requeter
-   * @returns cvs Cv[]
-   */
-  selectByProperty(property: string, value: string) {
-    const search = `{"where":{"${property}":"${value}"}}`;
-    const params = new HttpParams().set("filter", search);
-    return this.http.get<Cv[]>(API.cv, { params });
-  }
-
-  /**
-   * Permet d'ajouter un cv au flux des cvs sélectionnés
-   *
-   * @param cv : Le cv à ajouter dans le flux des cvs sélectionnés
-   */
-  selectCv(cv: Cv) {
-    this.#selectCvSuject$.next(cv);
   }
 }
