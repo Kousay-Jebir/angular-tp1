@@ -16,7 +16,7 @@ export class AuthService {
 user = signal<ConnectedUser|null>(null)
 token = signal<string|null>(null)
 
-isAuthenticated = computed(()=>!!this.token)
+isAuthenticated = signal<boolean>(false)
 
 
   
@@ -53,11 +53,11 @@ isAuthenticated = computed(()=>!!this.token)
     }
   }
 
-  login(credentials: CredentialsDto): Observable<LoginResponseDto> {
-    return this.http.post<LoginResponseDto>(API.login, credentials);
-  }
+  // login(credentials: CredentialsDto): Observable<LoginResponseDto> {
+  //   return this.http.post<LoginResponseDto>(API.login, credentials);
+  // }
   ///////////////////////////////////////////////////
-  loginTest(credentials:CredentialsDto): Observable<LoginResponseDto>{
+  login(credentials:CredentialsDto): Observable<LoginResponseDto>{
      return this.http.post<LoginResponseDto>(API.login, credentials).pipe(
       tap((response) => {
         this.token.set(response.id);
@@ -70,17 +70,30 @@ isAuthenticated = computed(()=>!!this.token)
     );
     
   }
+  loginTest(credentials:CredentialsDto): any{
+     
+        this.token.set("this_is_a_test_token");
+        this.user.set({email:credentials.email,id:1})
+        this.isAuthenticated.set(true)
+
+        localStorage.setItem('token', "this_is_a_test_token");
+        localStorage.setItem('userId', "1");
+        localStorage.setItem('userEmail', credentials.email);
+      
+    
+  }
 //////////////////////////////////////////////////////////////////////////
   // isAuthenticated(): boolean {
   //   return !!localStorage.getItem('token');
   // }
 
+  // logout() {
+  //   localStorage.removeItem('token');
+  // }
   logout() {
-    localStorage.removeItem('token');
-  }
-  logoutTest() {
     this.token.set(null);
     this.user.set(null);
+    this.isAuthenticated.set(false)
     localStorage.clear();
   }
 }

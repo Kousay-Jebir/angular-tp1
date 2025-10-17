@@ -36,6 +36,8 @@ export class LoginComponent {
     });
   }
   loginTest(credentials:CredentialsDto){
-    console.log(credentials)
+    this.authService.loginTest(credentials)
+    this.toastr.success(`Bienvenu chez vous :)`);
+    this.router.navigate([APP_ROUTES.cv]);
   }
 }
