@@ -1,0 +1,42 @@
+.card {
+  max-width: 400px;
+  margin: 2rem auto;
+  padding: 1.5rem;
+  border-radius: 1rem;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.title {
+  text-align: center;
+  color: #2a9d8f;
+  font-weight: 600;
+  margin-bottom: .5rem;
+}
+
+.inputs {
+  display: flex;
+  flex-direction: column;
+  gap: .6rem;
+}
+
+.inputs label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.inputs input {
+  width: 120px;
+  padding: 0.3rem;
+  border-radius: .5rem;
+  border: 1px solid #ccc;
+}
+
+.results p {
+  font-size: 1.1rem;
+  margin: .3rem 0;
+}

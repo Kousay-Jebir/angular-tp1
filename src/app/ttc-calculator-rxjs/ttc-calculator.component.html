@@ -1,0 +1,25 @@
+<div class="ttc-calculator">
+  <h2>Calculateur de prix TTC</h2>
+
+  <div class="form">
+    <label>Prix HT:
+      <input #prixHtInput type="number"/>
+    </label>
+
+    <label>Quantité:
+      <input #quantiteInput type="number"/>
+    </label>
+
+    <label>TVA (%):
+      <input #tvaInput type="number"/>
+    </label>
+  </div>
+
+  <ng-container *ngIf="result$ | async as r">
+    <div class="results">
+      <p>Prix unitaire TTC: <strong>{{r.prixUnitaireTTC}} TND</strong></p>
+      <p>Prix total TTC: <strong>{{ r.prixTotalTTC}} TND</strong></p>
+      <p>Remise: <strong>{{r.remise * 100}}%</strong></p>
+    </div>
+  </ng-container>
+</div>
