@@ -53,34 +53,16 @@ isAuthenticated = computed(()=>this.token()!=null)
     }
   }
 
-  // login(credentials: CredentialsDto): Observable<LoginResponseDto> {
-  //   return this.http.post<LoginResponseDto>(API.login, credentials);
-  // }
-  ///////////////////////////////////////////////////
-  login(credentials:CredentialsDto): Observable<LoginResponseDto>{
-     return this.http.post<LoginResponseDto>(API.login, credentials).pipe(
-      tap((response) => {
-        this.token.set(response.id);
-        this.user.set({email:credentials.email,id:response.userId})
-
-        localStorage.setItem('token', response.id);
-        localStorage.setItem('userId', response.userId.toString());
-        localStorage.setItem('userEmail', credentials.email);
-      })
-    );
-    
+  login(credentials: CredentialsDto): Observable<LoginResponseDto> {
+    return this.http.post<LoginResponseDto>(API.login, credentials);
   }
-  loginTest(credentials:CredentialsDto): any{
-     
-        this.token.set("this_is_a_test_token");
-        this.user.set({email:credentials.email,id:1})
-        // this.isAuthenticated.set(true)
+  ///////////////////////////////////////////////////
 
-        localStorage.setItem('token', "this_is_a_test_token");
-        localStorage.setItem('userId', "1");
-        localStorage.setItem('userEmail', credentials.email);
-      
-    
+  loginTest(credentials:CredentialsDto): boolean{
+      if(credentials.email=="chedli@email.com" && credentials.password=="azerty"){
+        return true
+      }
+      return false
   }
 //////////////////////////////////////////////////////////////////////////
   // isAuthenticated(): boolean {
@@ -93,7 +75,6 @@ isAuthenticated = computed(()=>this.token()!=null)
   logout() {
     this.token.set(null);
     this.user.set(null);
-    // this.isAuthenticated.set(false)
     localStorage.clear();
   }
 }
