@@ -6,13 +6,12 @@ import { ToastrService } from 'ngx-toastr';
 import { APP_ROUTES } from '../../../config/routes.config';
 import { FormsModule } from '@angular/forms';
 
-
 @Component({
-    selector: 'app-login',
-    templateUrl: './login.component.html',
-    styleUrls: ['./login.component.css'],
-    standalone: true,
-    imports: [FormsModule],
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.css'],
+  standalone: true,
+  imports: [FormsModule],
 })
 export class LoginComponent {
   private authService = inject(AuthService);
@@ -26,7 +25,11 @@ export class LoginComponent {
   login(credentials: CredentialsDto) {
     this.authService.login(credentials).subscribe({
       next: (response) => {
+        this.authService.token.set(response.id);
+        this.authService.user.set({ email: credentials.email, id: response.userId });
         localStorage.setItem('token', response.id);
+        localStorage.setItem('userId', String(response.userId));
+        localStorage.setItem('userEmail', credentials.email);
         this.toastr.success(`Bienvenu chez vous :)`);
         this.router.navigate([APP_ROUTES.cv]);
       },
@@ -34,5 +37,13 @@ export class LoginComponent {
         this.toastr.error('Veuillez vérifier vos credentials');
       },
     });
+  }
+  loginTest(credentials: CredentialsDto) {
+    if (this.authService.loginTest(credentials)) {
+      this.toastr.success(`Bienvenu chez vous :)`);
+      this.router.navigate([APP_ROUTES.cv]);
+    } else {
+      this.toastr.error('Veuillez vérifier vos credentials');
+    }
   }
 }

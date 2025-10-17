@@ -3,7 +3,7 @@ import { Todo } from '../model/todo';
 import { TodoService } from '../service/todo.service';
 
 import { FormsModule } from '@angular/forms';
-import { TodoElementComponent } from './todo-element.component';
+import { TodoElementComponent } from './todoElement/todo-element.component';
 
 @Component({
     selector: 'app-todo',
@@ -31,8 +31,6 @@ export class TodoComponent {
     const id = crypto.randomUUID();
     this.todo.id=id;
     this.todoService.addTodo(this.todo);
-    // this.todos.set(this.todoService.getTodos())
-    // this.todos.update(list => [...list, this.todo]);
     this.todo = new Todo();
   }
 

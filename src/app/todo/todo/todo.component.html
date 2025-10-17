@@ -14,38 +14,35 @@
     <table class="table table-bordered text-center">
       <thead class="table-light">
         <tr>
-          <th>Waiting</th>
-          <th>In Progress</th>
-          <th>Done</th>
+          <th style="background-color: rgb(171, 170, 170);">Waiting</th>
+          <th style="background-color: rgb(255, 255, 116);">In Progress Todos</th>
+          <th style="background-color: rgb(157, 255, 157);">Done Todos</th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <td style="width: 500px; height: 100px; vertical-align: top; overflow-y: auto;">
-            <ul style="list-style: none;"> @for (todo of waitingTodos(); track todo) {
 
-              <app-todo-element [todo]="todo" [onDelete]="deleteTodo.bind(this)"
-                [onStatusChange]="updateTodoStatus.bind(this)">
-              </app-todo-element>
-              }
-            </ul>
+
+            <app-todo-element [todos]="waitingTodos()" [onDelete]="deleteTodo.bind(this)"
+              [onStatusChange]="updateTodoStatus.bind(this)">
+            </app-todo-element>
+
           </td>
           <td style="width: 500px; height: 100px; vertical-align: top; overflow-y: auto;">
-            <ul style="list-style: none;"> @for (todo of inProgressTodos(); track todo) {
-              <app-todo-element [todo]="todo" [onDelete]="deleteTodo.bind(this)"
-                [onStatusChange]="updateTodoStatus.bind(this)">
-              </app-todo-element>
-              }
-            </ul>
+
+            <app-todo-element [todos]="inProgressTodos()" [onDelete]="deleteTodo.bind(this)"
+              [onStatusChange]="updateTodoStatus.bind(this)">
+            </app-todo-element>
+
           </td>
           <td style="width: 500px; height: 100px; vertical-align: top; overflow-y: auto;">
-            <ul style="list-style: none;"> @for (todo of doneTodos(); track todo) {
 
-              <app-todo-element [todo]="todo" [onDelete]="deleteTodo.bind(this)"
-                [onStatusChange]="updateTodoStatus.bind(this)">
-              </app-todo-element>
-              }
-            </ul>
+
+            <app-todo-element [todos]="doneTodos()" [onDelete]="deleteTodo.bind(this)"
+              [onStatusChange]="updateTodoStatus.bind(this)">
+            </app-todo-element>
+
           </td>
         </tr>
       </tbody>
