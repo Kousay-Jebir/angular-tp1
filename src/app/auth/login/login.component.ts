@@ -35,4 +35,7 @@ export class LoginComponent {
       },
     });
   }
+  loginTest(credentials:CredentialsDto){
+    console.log(credentials)
+  }
 }
