@@ -1,17 +1,17 @@
 <ul style="list-style: none;">
       @for (todo of todos; track todo) {
-      <li>
-        {{ todo.name }} : {{ todo.content }}
-        <i (click)="onDelete(todo)" class="fa fa-trash" aria-hidden="true"></i>
+      <li style="display: flex; justify-content: space-between; align-items: center">
+        <h3>{{ todo.name }} : {{ todo.content }}</h3>
         <select
           [ngModel]="todo.status"
           (ngModelChange)="onStatusChange(todo.id, $event)"
           class="form-select form-select-sm mt-1"
+          style="width: 200px;"
         >
           <option value="waiting">Waiting</option>
           <option value="in progress">In Progress</option>
           <option value="done">Done</option>
         </select>
-      </li>
+        <i style="font-size: x-large;" (click)="onDelete(todo)" class="fa fa-trash" aria-hidden="true"></i>
       }
     </ul>
