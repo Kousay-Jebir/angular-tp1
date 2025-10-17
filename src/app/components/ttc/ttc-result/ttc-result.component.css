@@ -1,0 +1,26 @@
+.box {
+  flex: 1;
+  padding: 15px 10px;
+  border-radius: 6px;
+  color: #333;
+  font-weight: 600;
+  text-align: center;
+  font-size: 1rem;
+  border: 1px solid transparent;
+}
+.label {
+  margin-right: 6px;
+}
+
+.blue {
+  background-color: #d9f0fb;
+  border-color: #b5e1f9;
+}
+.green {
+  background-color: #d8f7d8;
+  border-color: #b7ebb7;
+}
+.red {
+  background-color: #fbe3e3;
+  border-color: #f3bdbd;
+}

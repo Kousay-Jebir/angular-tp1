@@ -1,0 +1,55 @@
+<div class="ttc-container">
+  <h2 class="title">TTC Calculator</h2>
+
+  <div class="inputs">
+    <app-ttc-input
+      label="Prix HT"
+      [value]="priceHT()"
+      (valueChange)="priceHT.set($event)"
+    >
+    </app-ttc-input>
+
+    <app-ttc-input
+      label="Quantité"
+      [value]="quantity()"
+      (valueChange)="quantity.set($event)"
+    >
+    </app-ttc-input>
+
+    <app-ttc-input
+      label="TVA (%)"
+      [value]="tva()"
+      (valueChange)="tva.set($event)"
+    >
+    </app-ttc-input>
+  </div>
+
+  <div class="results">
+    <app-ttc-result
+      label="Prix unitaire TTC"
+      [value]="unitPriceTTC()"
+      variant="blue"
+      [currency]="true"
+      currencyCode="USD"
+    >
+    </app-ttc-result>
+
+    <app-ttc-result
+      label="Prix total TTC"
+      [value]="totalTTC()"
+      variant="green"
+      [currency]="true"
+      currencyCode="USD"
+    >
+    </app-ttc-result>
+
+    <app-ttc-result
+      label="Discount"
+      [value]="discount()"
+      variant="red"
+      [currency]="true"
+      currencyCode="USD"
+    >
+    </app-ttc-result>
+  </div>
+</div>

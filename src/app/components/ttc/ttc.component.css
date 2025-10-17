@@ -1,0 +1,98 @@
+/* Main container */
+.ttc-container {
+  width: 750px;
+  margin: 40px auto;
+  background-color: #f9f9f9;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 25px 30px;
+  font-family: "Segoe UI", sans-serif;
+}
+
+/* Header */
+.title {
+  text-align: center;
+  font-size: 1.8rem;
+  color: #222;
+  margin-bottom: 20px;
+}
+
+/* Inputs row */
+.inputs {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 25px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.input-group label {
+  font-weight: 600;
+  margin-bottom: 6px;
+  color: #333;
+}
+
+.input-group input {
+  width: 120px;
+  height: 32px;
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  font-size: 1rem;
+  text-align: right;
+}
+
+/* Results */
+.results {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.box {
+  flex: 1;
+  padding: 15px 10px;
+  border-radius: 6px;
+  color: #333;
+  font-weight: 600;
+  text-align: center;
+  font-size: 1rem;
+}
+
+/* Color styling inspired by your screenshot */
+.blue {
+  background-color: #d9f0fb;
+  border: 1px solid #b5e1f9;
+}
+
+.green {
+  background-color: #d8f7d8;
+  border: 1px solid #b7ebb7;
+}
+
+.red {
+  background-color: #fbe3e3;
+  border: 1px solid #f3bdbd;
+}
+
+/* Responsive */
+@media (max-width: 700px) {
+  .inputs {
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .results {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .box {
+    width: 100%;
+  }
+}

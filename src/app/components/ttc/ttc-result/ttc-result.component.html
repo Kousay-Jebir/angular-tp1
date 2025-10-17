@@ -1,0 +1,9 @@
+<div class="box" [ngClass]="variant">
+  <span class="label">{{ label }}:</span>
+  <span class="val" *ngIf="currency; else plain">
+    {{ value | currency : currencyCode : "symbol" : "1.2-2" }}
+  </span>
+  <ng-template #plain>
+    {{ value | number : "1.2-2" }}
+  </ng-template>
+</div>

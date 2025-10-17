@@ -1,0 +1,17 @@
+.input-group {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+label {
+  font-weight: 500;
+}
+
+input {
+  width: 120px;
+  padding: 4px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+  text-align: right;
+}
