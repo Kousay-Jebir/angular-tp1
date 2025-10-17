@@ -1,11 +1,14 @@
-import { Injectable } from "@angular/core";
-import { Cv } from "../model/cv";
-import { Observable, Subject } from "rxjs";
-import { HttpClient, HttpParams } from "@angular/common/http";
-import { API } from "../../../config/api.config";
+import { Injectable } from '@angular/core';
+import { Cv } from '../model/cv';
+import { catchError, Observable, of, Subject } from 'rxjs';
+import { HttpClient, HttpParams } from '@angular/common/http';
+import { API } from '../../../config/api.config';
+import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
+import { APP_ROUTES } from 'src/config/routes.config';
 
 @Injectable({
-  providedIn: "root",
+  providedIn: 'root',
 })
 export class CvService {
   private cvs: Cv[] = [];
@@ -17,10 +20,14 @@ export class CvService {
    * Le flux des cvs sélectionnés
    */
   selectCv$ = this.#selectCvSuject$.asObservable();
-  constructor(private http: HttpClient) {
+  constructor(
+    private http: HttpClient,
+    private toastr: ToastrService,
+    private router: Router
+  ) {
     this.cvs = [
-      new Cv(1, "aymen", "sellaouti", "teacher", "as.jpg", "1234", 40),
-      new Cv(2, "skander", "sellaouti", "enfant", "       ", "1234", 4),
+      new Cv(1, 'aymen', 'sellaouti', 'teacher', 'as.jpg', '1234', 40),
+      new Cv(2, 'skander', 'sellaouti', 'enfant', '       ', '1234', 4),
     ];
   }
 
@@ -55,7 +62,14 @@ export class CvService {
    *
    */
   deleteCvById(id: number): Observable<any> {
-    return this.http.delete<any>(API.cv + id);
+    return this.http.delete<any>(API.cv + id).pipe(
+      catchError((error) => {
+        this.toastr.error(
+          `Problème avec le serveur veuillez contacter l'admin`
+        );
+        return of();
+      })
+    );
   }
 
   addCv(cv: Cv): Observable<Cv> {
@@ -70,8 +84,13 @@ export class CvService {
    * @returns CV[]
    *
    */
-  getCvById(id: number): Observable<Cv> {
-    return this.http.get<Cv>(API.cv + id);
+  getCvById(id: number): Observable<Cv | null> {
+    return this.http.get<Cv>(API.cv + id).pipe(
+      catchError((error) => {
+        console.log(`error while getting cv by id: ${id} `, error);
+        return of(null);
+      })
+    );
   }
 
   /**
@@ -108,7 +127,7 @@ export class CvService {
    */
   selectByName(name: string) {
     const search = `{"where":{"name":{"like":"%${name}%"}}}`;
-    const params = new HttpParams().set("filter", search);
+    const params = new HttpParams().set('filter', search);
     return this.http.get<any>(API.cv, { params });
   }
   /**
@@ -119,7 +138,7 @@ export class CvService {
    */
   selectByProperty(property: string, value: string) {
     const search = `{"where":{"${property}":"${value}"}}`;
-    const params = new HttpParams().set("filter", search);
+    const params = new HttpParams().set('filter', search);
     return this.http.get<Cv[]>(API.cv, { params });
   }
 

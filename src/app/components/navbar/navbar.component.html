@@ -26,6 +26,13 @@
           routerLinkActive="active text-primary"
           >Rainbow Playground</a
         >
+        <a
+          class="nav-link"
+          [routerLinkActiveOptions]="{ exact: true }"
+          [routerLink]="['cv']"
+          routerLinkActive="active text-primary"
+          >Cv</a
+        >
         <!-- <a
           class="nav-link"
           aria-current="page"
@@ -34,13 +41,7 @@
           routerLinkActive="active text-primary"
           >Home</a
         >
-        <a
-          class="nav-link"
-          [routerLinkActiveOptions]="{ exact: true }"
-          [routerLink]="['cv']"
-          routerLinkActive="active text-primary"
-          >Cv</a
-        >
+        
         <a
           *ngIf="authService.isAuthenticated()"
           class="nav-link"
