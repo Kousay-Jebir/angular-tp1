@@ -84,6 +84,9 @@
         >
         <a class="nav-link" [routerLink]="['rainbow']"
           routerLinkActive="active text-primary" >Rainbow</a>
+        @if (authService.isAuthenticated()){
+          <h5 style="margin-left: 400px;">{{authService.user()?.email}}</h5>
+        }
       </div>
     </div>
   </div>
