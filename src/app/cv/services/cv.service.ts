@@ -1,28 +1,22 @@
-// src/app/cv/services/cv.service.ts
 import { Injectable, signal, inject } from '@angular/core';
 import { Cv } from '../model/cv';
 import { API } from '../../../config/api.config';
 
 @Injectable({ providedIn: 'root' })
 export class CvService {
-  // Shared selection across the app, signal not RxJS
   selectedCv = signal<Cv | null>(null);
 
-  // Local fake cache for fallback
   private fake: Cv[] = [
     new Cv(1, 'aymen', 'sellaouti', 'teacher', 'as.jpg', '1234', 40),
     new Cv(2, 'skander', 'sellaouti', 'enfant', '       ', '1234', 4),
   ];
 
-  // Helpers
   getFakeCvs(): Cv[] {
     return this.fake;
   }
   selectCv(cv: Cv | null) {
     this.selectedCv.set(cv);
   }
-
-  // Core HTTP helper (native fetch, no RxJS)
   private async request<T>(url: string, init?: RequestInit): Promise<T> {
     const res = await fetch(url, {
       headers: { 'Content-Type': 'application/json' },
@@ -35,7 +29,6 @@ export class CvService {
     return (await res.json()) as T;
   }
 
-  // API methods, all Promise-based
   async getCvs(): Promise<Cv[]> {
     return this.request<Cv[]>(API.cv);
   }
