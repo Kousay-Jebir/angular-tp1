@@ -14,7 +14,6 @@ import { Cv } from '../model/cv';
 import { APP_ROUTES } from 'src/config/routes.config';
 import { JsonPipe } from '@angular/common';
 
-// Optional: keep your form-level rule if you need it
 function cinAndAgeValidator(group: AbstractControl) {
   const cin = group.get('cin')?.value as string;
   const age = Number(group.get('age')?.value);
@@ -47,15 +46,12 @@ export class AddCvComponent {
     { validators: cinAndAgeValidator }
   );
 
-  // Promise-based submit, compatible with your new service
   async addCv() {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
       return;
     }
     try {
-      // assuming your new service method is Promise-based:
-      // e.g., addCv(cv: Cv): Promise<Cv>
       const created = await this.cvService.addCv(this.form.value as Cv);
       this.toastr.success(
         `Le CV ${created.firstname} ${created.name} a été ajouté`

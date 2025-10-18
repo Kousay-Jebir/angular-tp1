@@ -7,20 +7,16 @@ import { RouterLink } from '@angular/router';
 import { DefaultImagePipe } from '../pipes/default-image.pipe';
 
 @Component({
-    selector: 'app-cv-card',
-    templateUrl: './cv-card.component.html',
-    styleUrls: ['./cv-card.component.css'],
-    standalone: true,
-    imports: [
-    RouterLink,
-    DefaultImagePipe
-],
+  selector: 'app-cv-card',
+  templateUrl: './cv-card.component.html',
+  styleUrls: ['./cv-card.component.css'],
+  standalone: true,
+  imports: [RouterLink, DefaultImagePipe],
 })
 export class CvCardComponent {
   private embaucheService = inject(EmbaucheService);
   private toastr = inject(ToastrService);
 
-  /** Inserted by Angular inject() migration for backwards compatibility */
   constructor(...args: unknown[]);
 
   constructor() {}

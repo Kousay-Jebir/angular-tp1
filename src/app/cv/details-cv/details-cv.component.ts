@@ -14,7 +14,7 @@ import { DefaultImagePipe } from '../pipes/default-image.pipe';
   standalone: true,
   templateUrl: './details-cv.component.html',
   styleUrls: ['./details-cv.component.css'],
-  imports: [CommonModule, DefaultImagePipe], // CommonModule for @if
+  imports: [CommonModule, DefaultImagePipe],
 })
 export class DetailsCvComponent implements OnInit {
   private cvService = inject(CvService);
@@ -28,7 +28,7 @@ export class DetailsCvComponent implements OnInit {
   async ngOnInit(): Promise<void> {
     const id = Number(this.activatedRoute.snapshot.params['id']);
     try {
-      this.cv = await this.cvService.getCvById(id); // Promise<Cv>
+      this.cv = await this.cvService.getCvById(id);
     } catch {
       this.toastr.error(`Impossible de charger ce CV`);
       await this.router.navigate([APP_ROUTES.cv]);
@@ -37,7 +37,7 @@ export class DetailsCvComponent implements OnInit {
 
   async deleteCv(cv: Cv): Promise<void> {
     try {
-      await this.cvService.deleteCvById(cv.id); // Promise<void>
+      await this.cvService.deleteCvById(cv.id);
       this.toastr.success(`${cv.name} supprimé avec succès`);
       await this.router.navigate([APP_ROUTES.cv]);
     } catch {

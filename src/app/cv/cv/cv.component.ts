@@ -1,4 +1,3 @@
-// src/app/cv/cv/cv.component.ts
 import { Component, inject, signal, OnInit } from '@angular/core';
 import { CommonModule, DatePipe, UpperCasePipe } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
