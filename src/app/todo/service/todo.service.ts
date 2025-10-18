@@ -56,7 +56,7 @@ export class TodoService {
    * @returns boolean
    */
   deleteTodo(todo: Todo): any {
-    this.todos.update(list => list.filter(t => t !== todo));
+    this.todos.update(list => list.filter(t => t.id !== todo.id));
   }
 
   /**
