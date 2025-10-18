@@ -66,14 +66,4 @@ export class CvService {
   findCvByIdLocal(id: number): Cv | null {
     return this.fake.find((cv) => cv.id === id) ?? null;
   }
-
-  // Optional: delete in local fake cache
-  deleteCvLocal(cv: Cv): boolean {
-    const i = this.fake.indexOf(cv);
-    if (i > -1) {
-      this.fake.splice(i, 1);
-      return true;
-    }
-    return false;
-  }
 }
