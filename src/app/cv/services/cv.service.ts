@@ -62,7 +62,6 @@ export class CvService {
     return this.request<Cv[]>(`${API.cv}?filter=${filter}`);
   }
 
-  // Optional: find in local fake cache
   findCvByIdLocal(id: number): Cv | null {
     return this.fake.find((cv) => cv.id === id) ?? null;
   }
