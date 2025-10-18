@@ -1,5 +1,5 @@
 <ul style="list-style: none;">
-      @for (todo of todos; track todo) {
+      @for (todo of todos; track todo.id) {
       <li style="display: flex; justify-content: space-between; align-items: center">
         <h3>{{ todo.name }} : {{ todo.content }}</h3>
         <select
