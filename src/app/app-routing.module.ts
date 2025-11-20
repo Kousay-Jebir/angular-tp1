@@ -14,6 +14,7 @@ import { DetailsCvComponent } from './cv/details-cv/details-cv.component';
 import { RhComponent } from './optimizationPattern/rh/rh.component';
 import { RainbowPlaygroundComponent } from './components/rainbow-playground/rainbow-playground.component';
 import { TtcCalculatorComponent } from './ttc-calculator-rxjs/ttc-calculator.component';
+import { ProductsComponent } from './products/products.component';
 
 const routes: Route[] = [
   { path: 'login', component: LoginComponent },
@@ -24,6 +25,7 @@ const routes: Route[] = [
   },
   { path: 'cv/add', component: AddCvComponent, canActivate: [AuthGuard] },
   { path: 'cv/:id', component: DetailsCvComponent },
+  { path: 'products', component: ProductsComponent },
   {
     path: '',
     component: FrontComponent,

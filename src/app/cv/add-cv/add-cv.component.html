@@ -20,9 +20,25 @@
   >
     Cette Cin est invalide
   </div>
-  Job: <input type="text" class="form-control" formControlName="job" /> Path:
+  <div
+    *ngIf="
+    form.errors?.['cinAgeMismatch'] &&
+    cin?.touched &&
+    age?.touched
+  "
+    class="alert alert-danger"
+  >
+    Cin non cohérente avec l âge.
+  </div>
+  Job: <input type="text" class="form-control" formControlName="job" />
+  Path:
   <input type="text" class="form-control" formControlName="path" />
-
+  <div
+    *ngIf="path?.errors?.['underagePathNotAllowed'] && path?.touched"
+    class="alert alert-danger"
+  >
+    Les mineurs ne peuvent pas renseigner le path de l image.
+  </div>
   <button [disabled]="form.invalid" class="btn btn-primary" (click)="addCv()">
     add cv
   </button>
