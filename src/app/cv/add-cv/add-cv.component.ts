@@ -11,6 +11,8 @@ import { ToastrService } from 'ngx-toastr';
 import { CvService } from '../services/cv.service';
 import { Component } from '@angular/core';
 import { cinAgeValidator } from './validators';
+import { FormPersistenceService } from '../services/form_persistence.service';
+import { debounceTime } from 'rxjs';
 
 @Component({
   selector: 'app-add-cv',
@@ -18,20 +20,7 @@ import { cinAgeValidator } from './validators';
   styleUrls: ['./add-cv.component.css'],
 })
 export class AddCvComponent {
-  constructor(
-    private cvService: CvService,
-    private router: Router,
-    private toastr: ToastrService,
-    private formBuilder: FormBuilder
-  ) {
-    // initial rule application
-    this.applyPathValidators(this.age.value);
-
-    // subscribe to age changes
-    this.age.valueChanges.subscribe((ageValue) => {
-      this.applyPathValidators(ageValue);
-    });
-  }
+  private readonly FORM_KEY = 'addCvForm';
 
   form = this.formBuilder.group(
     {
@@ -57,6 +46,27 @@ export class AddCvComponent {
     }
   );
 
+  constructor(
+    private cvService: CvService,
+    private router: Router,
+    private toastr: ToastrService,
+    private formBuilder: FormBuilder,
+    private persistence: FormPersistenceService<any>
+  ) {
+    const savedFormSubject = this.persistence.getFormSubject(this.FORM_KEY, this.form.value);
+    const savedValue = savedFormSubject.getValue();
+    if (savedValue) {
+      this.form.patchValue(savedValue);
+    }
+
+    this.form.valueChanges
+      .pipe(debounceTime(300))
+      .subscribe((value: any) => savedFormSubject.next(value));
+
+    this.applyPathValidators(this.age.value);
+    this.age.valueChanges.subscribe((ageValue) => this.applyPathValidators(ageValue));
+  }
+
   private applyPathValidators(ageValue: unknown): void {
     const ageNumber = Number(ageValue);
 
@@ -74,14 +84,21 @@ export class AddCvComponent {
   }
 
   addCv() {
+    if (this.form.invalid) {
+      this.toastr.error('Veuillez remplir correctement tous les champs.');
+      return;
+    }
+
     this.cvService.addCv(this.form.value as Cv).subscribe({
       next: (cv: Cv) => {
+        this.persistence.clear(this.FORM_KEY);
+
         this.router.navigate([APP_ROUTES.cv]);
-        this.toastr.success(`Le cv ${cv.firstname} ${cv.name}`);
+        this.toastr.success(`Le cv ${cv.firstname} ${cv.name} a été ajouté`);
       },
       error: () => {
         this.toastr.error(
-          `Une erreur s'est produite, Veuillez contacter l'admin`
+          `Une erreur s'est produite, veuillez contacter l'admin`
         );
       },
     });
@@ -90,14 +107,14 @@ export class AddCvComponent {
   get name(): AbstractControl {
     return this.form.get('name')!;
   }
-  get firstname() {
-    return this.form.get('firstname');
+  get firstname(): AbstractControl {
+    return this.form.get('firstname')!;
   }
   get age(): AbstractControl {
     return this.form.get('age')!;
   }
-  get job() {
-    return this.form.get('job');
+  get job(): AbstractControl {
+    return this.form.get('job')!;
   }
   get path(): AbstractControl {
     return this.form.get('path')!;
