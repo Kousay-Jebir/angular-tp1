@@ -10,7 +10,7 @@
   import { ToastrService } from 'ngx-toastr';
   import { CvService } from '../services/cv.service';
   import { Component } from '@angular/core';
-  import { cinAgeValidator } from './validators';
+  import { cinAgeValidator, uniqueCinValidator } from './validators';
   import { FormPersistenceService } from '../services/form_persistence.service';
   import { debounceTime } from 'rxjs';
 
@@ -30,9 +30,8 @@
         job: ['', Validators.required],
         cin: [
           '',
-          {
-            validators: [Validators.required, Validators.pattern('[0-9]{8}')],
-          },
+          [Validators.required, Validators.pattern('[0-9]{8}')],
+          [uniqueCinValidator(this.cvService)] // async validator
         ],
         age: [
           0,
