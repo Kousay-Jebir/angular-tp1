@@ -71,7 +71,6 @@ import { SliderComponent } from './rxjs/slider/slider.component';
     CardProfilComponent,
     EmbaucheComponent,
     DefaultImagePipe,
-    AutocompleteComponent,
     NgstyleComponent,
     MiniWordComponent,
     NgclassComponent,
@@ -95,6 +94,7 @@ import { SliderComponent } from './rxjs/slider/slider.component';
   imports: [
     BrowserModule,
     FormsModule,
+    AutocompleteComponent,
     BrowserAnimationsModule, // required animations module
     ToastrModule.forRoot(), // ToastrModule added
     AppRoutingModule,
