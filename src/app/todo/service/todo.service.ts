@@ -11,11 +11,6 @@ export class TodoService {
   private loggerService = inject(LoggerService);
 
   private todos = signal<Todo[]>([]);
-  
-
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
-  constructor() {}
 
   /**
    * elle retourne la liste des todos
@@ -34,7 +29,7 @@ export class TodoService {
    */
   addTodo(todo: Todo): void {
     // this.todos.push(todo);
-    this.todos.update(list => [...list, todo]);
+    this.todos.update((list) => [...list, todo]);
   }
   /**
    *Elle permet de mettre a jour todo
@@ -42,11 +37,10 @@ export class TodoService {
    * @param todo: Todo
    *
    */
-  updateTodoStatus(todoId:string,newStatus:string){
-      this.todos.update(list => 
-    list.map(t => t.id == todoId ? { ...t, status: newStatus } : t)
-  );
-
+  updateTodoStatus(todoId: string, newStatus: string) {
+    this.todos.update((list) =>
+      list.map((t) => (t.id == todoId ? { ...t, status: newStatus } : t))
+    );
   }
 
   /**
@@ -56,7 +50,7 @@ export class TodoService {
    * @returns boolean
    */
   deleteTodo(todo: Todo): any {
-    this.todos.update(list => list.filter(t => t.id !== todo.id));
+    this.todos.update((list) => list.filter((t) => t.id !== todo.id));
   }
 
   /**

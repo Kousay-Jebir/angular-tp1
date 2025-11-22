@@ -1,12 +1,17 @@
-import { Directive, HostBinding, HostListener, inject, signal } from '@angular/core';
+import {
+  Directive,
+  HostBinding,
+  HostListener,
+  inject,
+  signal,
+} from '@angular/core';
 import { ColorService } from './color.service';
 
 @Directive({
   selector: 'input[rainbow]',
-  standalone: true
+  standalone: true,
 })
 export class RainbowDirective {
-
   private colorService = inject(ColorService);
   private currentColor = signal<string>('black');
 
@@ -14,7 +19,7 @@ export class RainbowDirective {
   get styles() {
     return {
       color: this.currentColor(),
-      borderColor: this.currentColor()
+      borderColor: this.currentColor(),
     };
   }
 
@@ -23,5 +28,4 @@ export class RainbowDirective {
     const newColor = this.colorService.getRandomColor();
     this.currentColor.set(newColor);
   }
-
 }

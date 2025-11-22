@@ -16,12 +16,9 @@ export class AuthService {
   user = signal<ConnectedUser | null>(null);
   token = signal<string | null>(null);
 
-  isAuthenticated = computed(() => this.token() != null);
+  isAuthenticated = computed(() => !!this.token() != null);
 
   //////////////////////////////////////////////////////////////
-
-  /** Inserted by Angular inject() migration for backwards compatibility */
-  constructor(...args: unknown[]);
 
   constructor() {
     const savedToken = localStorage.getItem('token');
@@ -50,7 +47,7 @@ export class AuthService {
       localStorage.setItem('token', 'test_token_value');
       localStorage.setItem('userId', '1');
       localStorage.setItem('userEmail', credentials.email);
-      return true
+      return true;
     }
     return false;
   }
@@ -77,6 +74,6 @@ export class AuthService {
     this.user.set(null);
     localStorage.removeItem('token');
     localStorage.removeItem('userId');
-    localStorage.removeItem('userEmail')
+    localStorage.removeItem('userEmail');
   }
 }
