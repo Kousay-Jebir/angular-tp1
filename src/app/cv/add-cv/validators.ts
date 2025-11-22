@@ -1,4 +1,7 @@
-import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
+import { AbstractControl, ValidationErrors, ValidatorFn, AsyncValidatorFn } from '@angular/forms';
+import { CvService } from '../services/cv.service';
+import { of } from 'rxjs';
+import { map, catchError } from 'rxjs/operators';
 
 export const cinAgeValidator: ValidatorFn = (
   control: AbstractControl
@@ -21,3 +24,14 @@ export const cinAgeValidator: ValidatorFn = (
   const regexForYoung = /^([2-9][0-9])[0-9]{6}$/;
   return regexForYoung.test(cin) ? null : { cinAgeMismatch: true };
 };
+
+export function uniqueCinValidator(cvService: CvService): AsyncValidatorFn {
+  return (control: AbstractControl) => {
+    if (!control.value) return of(null);
+
+    return cvService.selectByProperty('cin', control.value).pipe(
+      map(cvs => (cvs && cvs.length > 0 ? { cinTaken: true } : null)),
+      catchError(() => of(null))
+    );
+  };
+}

@@ -1,108 +1,121 @@
-import {
-  AbstractControl,
-  FormBuilder,
-  ValidationErrors,
-  Validators,
-} from '@angular/forms';
-import { APP_ROUTES } from 'src/config/routes.config';
-import { Cv } from '../model/cv';
-import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
-import { CvService } from '../services/cv.service';
-import { Component } from '@angular/core';
-import { cinAgeValidator } from './validators';
+  import {
+    AbstractControl,
+    FormBuilder,
+    ValidationErrors,
+    Validators,
+  } from '@angular/forms';
+  import { APP_ROUTES } from 'src/config/routes.config';
+  import { Cv } from '../model/cv';
+  import { Router } from '@angular/router';
+  import { ToastrService } from 'ngx-toastr';
+  import { CvService } from '../services/cv.service';
+  import { Component } from '@angular/core';
+  import { cinAgeValidator, uniqueCinValidator } from './validators';
+  import { FormPersistenceService } from '../services/form_persistence.service';
+  import { debounceTime } from 'rxjs';
 
-@Component({
-  selector: 'app-add-cv',
-  templateUrl: './add-cv.component.html',
-  styleUrls: ['./add-cv.component.css'],
-})
-export class AddCvComponent {
-  constructor(
-    private cvService: CvService,
-    private router: Router,
-    private toastr: ToastrService,
-    private formBuilder: FormBuilder
-  ) {
-    // initial rule application
-    this.applyPathValidators(this.age.value);
+  @Component({
+    selector: 'app-add-cv',
+    templateUrl: './add-cv.component.html',
+    styleUrls: ['./add-cv.component.css'],
+  })
+  export class AddCvComponent {
+    private readonly FORM_KEY = 'addCvForm';
 
-    // subscribe to age changes
-    this.age.valueChanges.subscribe((ageValue) => {
-      this.applyPathValidators(ageValue);
-    });
-  }
+    form = this.formBuilder.group(
+      {
+        name: ['', Validators.required],
+        firstname: ['', Validators.required],
+        path: [''],
+        job: ['', Validators.required],
+        cin: [
+          '',
+          [Validators.required, Validators.pattern('[0-9]{8}')],
+          [uniqueCinValidator(this.cvService)] // async validator
+        ],
+        age: [
+          0,
+          {
+            validators: [Validators.required],
+          },
+        ],
+      },
+      {
+        validators: [cinAgeValidator],
+      }
+    );
 
-  form = this.formBuilder.group(
-    {
-      name: ['', Validators.required],
-      firstname: ['', Validators.required],
-      path: [''],
-      job: ['', Validators.required],
-      cin: [
-        '',
-        {
-          validators: [Validators.required, Validators.pattern('[0-9]{8}')],
-        },
-      ],
-      age: [
-        0,
-        {
-          validators: [Validators.required],
-        },
-      ],
-    },
-    {
-      validators: [cinAgeValidator],
-    }
-  );
+    constructor(
+      private cvService: CvService,
+      private router: Router,
+      private toastr: ToastrService,
+      private formBuilder: FormBuilder,
+      private persistence: FormPersistenceService<any>
+    ) {
+      const savedValue = this.persistence.getFormData(this.FORM_KEY, this.form.value);
+      if (savedValue) {
+        this.form.patchValue(savedValue);
+      }
+      this.form.valueChanges
+        .pipe(debounceTime(300))
+        .subscribe((value: any) => this.persistence.saveFormData(this.FORM_KEY, value));
 
-  private applyPathValidators(ageValue: unknown): void {
-    const ageNumber = Number(ageValue);
-
-    if (!Number.isNaN(ageNumber) && ageNumber < 18) {
-      this.path.setValidators([
-        (control: AbstractControl): ValidationErrors | null =>
-          control.value ? { underagePathNotAllowed: true } : null,
-      ]);
-      this.path.setValue('');
-    } else {
-      this.path.setValidators([]);
+      this.applyPathValidators(this.age.value);
+      this.age.valueChanges.subscribe((ageValue) => this.applyPathValidators(ageValue));
     }
 
-    this.path.updateValueAndValidity();
-  }
+    private applyPathValidators(ageValue: unknown): void {
+      const ageNumber = Number(ageValue);
 
-  addCv() {
-    this.cvService.addCv(this.form.value as Cv).subscribe({
-      next: (cv: Cv) => {
-        this.router.navigate([APP_ROUTES.cv]);
-        this.toastr.success(`Le cv ${cv.firstname} ${cv.name}`);
-      },
-      error: () => {
-        this.toastr.error(
-          `Une erreur s'est produite, Veuillez contacter l'admin`
-        );
-      },
-    });
-  }
+      if (!Number.isNaN(ageNumber) && ageNumber < 18) {
+        this.path.setValidators([
+          (control: AbstractControl): ValidationErrors | null =>
+            control.value ? { underagePathNotAllowed: true } : null,
+        ]);
+        this.path.setValue('');
+      } else {
+        this.path.setValidators([]);
+      }
 
-  get name(): AbstractControl {
-    return this.form.get('name')!;
+      this.path.updateValueAndValidity();
+    }
+
+    addCv() {
+      if (this.form.invalid) {
+        this.toastr.error('Veuillez remplir correctement tous les champs.');
+        return;
+      }
+
+      this.cvService.addCv(this.form.value as Cv).subscribe({
+        next: (cv: Cv) => {
+          this.persistence.clear(this.FORM_KEY);
+          this.router.navigate([APP_ROUTES.cv]);
+          this.toastr.success(`Le cv ${cv.firstname} ${cv.name} a été ajouté`);
+        },
+        error: () => {
+          this.toastr.error(
+            `Une erreur s'est produite, veuillez contacter l'admin`
+          );
+        },
+      });
+    }
+
+    get name(): AbstractControl {
+      return this.form.get('name')!;
+    }
+    get firstname(): AbstractControl {
+      return this.form.get('firstname')!;
+    }
+    get age(): AbstractControl {
+      return this.form.get('age')!;
+    }
+    get job(): AbstractControl {
+      return this.form.get('job')!;
+    }
+    get path(): AbstractControl {
+      return this.form.get('path')!;
+    }
+    get cin(): AbstractControl {
+      return this.form.get('cin')!;
+    }
   }
-  get firstname() {
-    return this.form.get('firstname');
-  }
-  get age(): AbstractControl {
-    return this.form.get('age')!;
-  }
-  get job() {
-    return this.form.get('job');
-  }
-  get path(): AbstractControl {
-    return this.form.get('path')!;
-  }
-  get cin(): AbstractControl {
-    return this.form.get('cin')!;
-  }
-}
