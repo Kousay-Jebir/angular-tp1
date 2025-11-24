@@ -65,12 +65,12 @@ export class AddCvComponent {
         (control: AbstractControl): ValidationErrors | null =>
           control.value ? { underagePathNotAllowed: true } : null,
       ]);
-      this.path.setValue('');
+      this.path.setValue('', { emitEvent: false });
     } else {
       this.path.setValidators([]);
     }
 
-    this.path.updateValueAndValidity();
+    this.path.updateValueAndValidity({ emitEvent: false });
   }
 
   addCv() {

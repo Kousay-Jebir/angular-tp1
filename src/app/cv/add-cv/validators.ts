@@ -10,14 +10,12 @@ export const cinAgeValidator: ValidatorFn = (
     return null;
   }
 
-  // Age >= 60 => deux premiers chiffres entre 00 et 19
   const ageNumber = Number(age);
   if (!Number.isNaN(ageNumber) && ageNumber >= 60) {
     const regexForOld = /^(0[0-9]|1[0-9])[0-9]{6}$/;
     return regexForOld.test(cin) ? null : { cinAgeMismatch: true };
   }
 
-  // Age < 60 => deux premiers chiffres > 19, donc 20-99
   const regexForYoung = /^([2-9][0-9])[0-9]{6}$/;
   return regexForYoung.test(cin) ? null : { cinAgeMismatch: true };
 };
