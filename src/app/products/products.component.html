@@ -1,17 +1,23 @@
-@if ((products$ | async); as productsList,) {
-  <button class="btn btn-primary"> More Products</button>
+@if (productsState(); as state) {
+  <button class="btn btn-primary" (click)="loadMoreProducts()">
+    More Products
+  </button>
+
   <div class="alert alert-warning">
-    Product Number: {{productsList?.length}}
+    Product Number: {{ state.data.length }}
+    @if (state.allLoaded) {
+      <strong> - max atteint</strong>
+    }
   </div>
+
   <div class="row">
-    @for (product of productsList; track product) {
+    @for (product of state.data; track product.id) {
       <div class="col-4">
-        <img class="rounded-circle" src="{{product.thumbnail}}" width="150px" height="150px">
-        {{product.title}}
+        <img class="rounded-circle" [src]="product.thumbnail" width="150px" height="150px">
+        {{ product.title }}
       </div>
     }
   </div>
 } @else {
   Loading...
 }
-

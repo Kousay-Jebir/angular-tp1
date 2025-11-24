@@ -15,6 +15,7 @@ import { RhComponent } from './optimizationPattern/rh/rh.component';
 import { RainbowPageComponent } from './rainbow/rainbow-page.component';
 import { TtcComponent } from './components/ttc/ttc.component';
 import { MasterDetailsCvComponent } from './master-details-cv/master-details-cv.component';
+import { ProductsComponent } from './products/products.component';
 
 const routes: Route[] = [
   { path: 'login', component: LoginComponent },
@@ -29,6 +30,8 @@ const routes: Route[] = [
     children: [{ path: ':id', component: DetailsCvComponent }],
   },
   { path: 'cv/add', component: AddCvComponent, canActivate: [AuthGuard] },
+  { path: 'products', component: ProductsComponent },
+
   {
     path: '',
     component: FrontComponent,
