@@ -1,0 +1,51 @@
+section.master-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.master-panel,
+.details-panel {
+  flex: 1 1 320px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1rem;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.master-panel header {
+  margin-bottom: 0.75rem;
+}
+
+.state {
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.state.error {
+  color: #b71c1c;
+}
+
+.state.empty {
+  color: #616161;
+}
+
+.details-panel {
+  min-height: 250px;
+  position: relative;
+}
+
+.placeholder {
+  position: absolute;
+  inset: 1rem;
+  border: 1px dashed #bdbdbd;
+  border-radius: 6px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: #757575;
+  padding: 1rem;
+}

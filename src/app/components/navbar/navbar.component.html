@@ -82,10 +82,20 @@
           routerLinkActive="active text-primary"
           >TTC</a
         >
-        <a class="nav-link" [routerLink]="['rainbow']"
-          routerLinkActive="active text-primary" >Rainbow</a>
+        <a
+          class="nav-link"
+          [routerLink]="['rainbow']"
+          routerLinkActive="active text-primary"
+          >Rainbow</a
+        >
+        <a
+          class="nav-link"
+          [routerLink]="['cv/master-details']"
+          routerLinkActive="active text-primary"
+          >List</a
+        >
         @if (authService.isAuthenticated()){
-          <h5 style="margin-left: 400px;">{{authService.user()?.email}}</h5>
+        <h5 style="margin-left: 400px">{{ authService.user()?.email }}</h5>
         }
       </div>
     </div>

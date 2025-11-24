@@ -1,7 +1,7 @@
-import { Component, OnInit, inject } from '@angular/core';
+import { Component, OnInit, inject, DestroyRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 
 import { Cv } from '../model/cv';
 import { CvService } from '../services/cv.service';
@@ -20,28 +20,28 @@ export class DetailsCvComponent implements OnInit {
   private cvService = inject(CvService);
   private router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
-  private toastr = inject(ToastrService);
+  private destroyRef = inject(DestroyRef);
   authService = inject(AuthService);
 
   cv: Cv | null = null;
 
-  async ngOnInit(): Promise<void> {
-    const id = Number(this.activatedRoute.snapshot.params['id']);
-    try {
-      this.cv = await this.cvService.getCvById(id);
-    } catch {
-      this.toastr.error(`Impossible de charger ce CV`);
-      await this.router.navigate([APP_ROUTES.cv]);
-    }
+  ngOnInit(): void {
+    this.activatedRoute.paramMap
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe((params) => {
+        const id = Number(params.get('id'));
+        void this.loadCv(id);
+      });
   }
 
   async deleteCv(cv: Cv): Promise<void> {
-    try {
-      await this.cvService.deleteCvById(cv.id);
-      this.toastr.success(`${cv.name} supprimé avec succès`);
-      await this.router.navigate([APP_ROUTES.cv]);
-    } catch {
-      this.toastr.error(`Problème serveur, veuillez contacter l'admin`);
-    }
+    await this.cvService.deleteCvById(cv.id);
+    this.cvService.selectCv(null);
+    await this.router.navigate([APP_ROUTES.cv]);
+  }
+
+  private async loadCv(id: number): Promise<void> {
+    this.cv = await this.cvService.getCvById(id);
+    this.cvService.selectCv(this.cv);
   }
 }

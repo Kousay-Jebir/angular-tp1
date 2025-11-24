@@ -1,1 +1,13 @@
-<p>master-details-cv works!</p>
+<header>
+  <h2>Liste des CVs</h2>
+</header>
+
+<div class="state empty" *ngIf="!cvs().length">Aucun CV disponible.</div>
+
+<app-list
+  *ngIf="cvs().length"
+  [cvs]="cvs()"
+  (selectCv)="onSelect($event)"
+></app-list>
+
+<router-outlet></router-outlet>
