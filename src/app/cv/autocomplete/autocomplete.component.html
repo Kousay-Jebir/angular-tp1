@@ -1,3 +1,18 @@
-<form [formGroup]="form">
-  <input type="text" class="form-control" formControlName="search" />
-</form>
+<div class="autocomplete-container" style="position: relative;">
+
+  <input
+    type="text"
+    placeholder="Rechercher un CV..."
+    [formControl]="search"
+    (focus)="open = true"
+    class="form-control"
+  />
+
+  <div *ngIf="open && results.length > 0" class="dropdown" style="position: absolute; width: 100%; z-index: 1000; background: white; border: 1px solid #ccc;">
+    
+    <div *ngFor="let cv of results" class="dropdown-item" (mousedown)="select(cv)" style="cursor: pointer;">
+      <strong>{{ cv.name }}</strong> {{ cv.firstname }} - {{ cv.job }}
+    </div>
+  </div>
+
+</div>

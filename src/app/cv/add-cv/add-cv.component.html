@@ -39,6 +39,10 @@
   >
     Les mineurs ne peuvent pas renseigner le path de l image.
   </div>
+  <div *ngIf="cin.errors?.['cinTaken']">
+  Ce CIN est déjà utilisé.
+</div>
+
   <button [disabled]="form.invalid" class="btn btn-primary" (click)="addCv()">
     add cv
   </button>
