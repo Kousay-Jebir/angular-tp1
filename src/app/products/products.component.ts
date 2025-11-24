@@ -19,35 +19,27 @@ import { Settings } from './dto/product-settings.dto';
 export class ProductsComponent {
   private readonly pageSize = 12;
 
-  // Page index stream (0, 1, 2, ...)
   private page$ = new BehaviorSubject<number>(0);
 
-  // Stream of all products to display
-  products$: Observable<Product[]>;
+  products$: Observable<Product[]> = this.page$.pipe(
+    concatMap((pageIndex) => {
+      const settings: Settings = {
+        limit: this.pageSize,
+        skip: pageIndex * this.pageSize,
+      };
 
-  constructor(private productService: ProductService) {
-    this.products$ = this.page$.pipe(
-      // For each page index, call the API with limit/skip
-      concatMap((pageIndex) => {
-        const settings: Settings = {
-          limit: this.pageSize,
-          skip: pageIndex * this.pageSize,
-        };
+      return this.productService
+        .getProducts(settings)
+        .pipe(map((response) => response.products));
+    }),
+    takeWhile((products) => products.length > 0),
+    scan(
+      (allProducts, newProducts) => [...allProducts, ...newProducts],
+      [] as Product[]
+    )
+  );
 
-        return this.productService.getProducts(settings).pipe(
-          // Map API response to list of products
-          map((response) => response.products)
-        );
-      }),
-      // Stop when API returns an empty list
-      takeWhile((products) => products.length > 0),
-      // Accumulate all batches into a single array
-      scan(
-        (allProducts, newProducts) => [...allProducts, ...newProducts],
-        [] as Product[]
-      )
-    );
-  }
+  constructor(private productService: ProductService) {}
 
   loadMore(): void {
     if (!this.page$.closed) {
