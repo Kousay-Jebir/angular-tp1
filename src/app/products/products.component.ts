@@ -50,7 +50,7 @@ export class ProductsComponent {
   }
 
   loadMore(): void {
-    if (!this.page$.isStopped) {
+    if (!this.page$.closed) {
       this.page$.next(this.page$.value + 1);
     }
   }
