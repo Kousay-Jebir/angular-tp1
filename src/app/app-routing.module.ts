@@ -23,6 +23,12 @@ const routes: Route[] = [
   {
     path: 'cv',
     component: CvComponent,
+    children: [
+    {
+      path: 'embauche',
+      loadComponent: () => import('./cv/embauche/embauche.component').then(c => c.EmbaucheComponent)
+    }
+  ]
   },
   {
     path: 'cv/master-details',

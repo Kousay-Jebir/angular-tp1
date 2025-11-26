@@ -7,6 +7,7 @@ import { Cv } from '../model/cv';
 import { ListComponent } from '../list/list.component';
 import { CvCardComponent } from '../cv-card/cv-card.component';
 import { EmbaucheComponent } from '../embauche/embauche.component';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-cv',
@@ -17,9 +18,9 @@ import { EmbaucheComponent } from '../embauche/embauche.component';
     CommonModule,
     ListComponent,
     CvCardComponent,
-    EmbaucheComponent,
     UpperCasePipe,
     DatePipe,
+    RouterModule
   ],
 })
 export class CvComponent implements OnInit {

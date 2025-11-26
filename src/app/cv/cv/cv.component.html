@@ -9,4 +9,9 @@
     <app-cv-card [cv]="selectedCv()"></app-cv-card>
   </div>
 </div>
-<app-embauche></app-embauche>
+
+<button [routerLink]="['embauche']" class="btn btn-primary">
+  Voir les embauches
+</button>
+
+<router-outlet></router-outlet>
