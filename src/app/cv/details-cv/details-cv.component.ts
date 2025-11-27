@@ -15,7 +15,7 @@ import { DefaultImagePipe } from '../pipes/default-image.pipe';
   imports: [
     CommonModule, 
     DefaultImagePipe,
-    RouterModule // Ajouter RouterModule ici
+    RouterModule
   ],
 })
 export class DetailsCvComponent {
