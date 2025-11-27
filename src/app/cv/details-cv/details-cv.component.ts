@@ -1,11 +1,9 @@
-import { Component, OnInit, inject, DestroyRef } from '@angular/core';
+import { Component, inject, signal, resource, computed } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute, Router } from '@angular/router';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-
+import { ActivatedRoute, Router, RouterModule } from '@angular/router'; // Ajouter RouterModule
 import { Cv } from '../model/cv';
 import { CvService } from '../services/cv.service';
-import { APP_ROUTES } from '../../../config/routes.config';
+import { APP_ROUTES } from '../../../config/routes.config'; // Importer APP_ROUTES
 import { AuthService } from '../../auth/services/auth.service';
 import { DefaultImagePipe } from '../pipes/default-image.pipe';
 
@@ -14,24 +12,43 @@ import { DefaultImagePipe } from '../pipes/default-image.pipe';
   standalone: true,
   templateUrl: './details-cv.component.html',
   styleUrls: ['./details-cv.component.css'],
-  imports: [CommonModule, DefaultImagePipe],
+  imports: [
+    CommonModule, 
+    DefaultImagePipe,
+    RouterModule // Ajouter RouterModule ici
+  ],
 })
-export class DetailsCvComponent implements OnInit {
+export class DetailsCvComponent {
   private cvService = inject(CvService);
   private router = inject(Router);
   private activatedRoute = inject(ActivatedRoute);
-  private destroyRef = inject(DestroyRef);
   authService = inject(AuthService);
 
-  cv: Cv | null = null;
+  // Exposer APP_ROUTES dans le composant
+  APP_ROUTES = APP_ROUTES;
 
-  ngOnInit(): void {
-    this.activatedRoute.paramMap
-      .pipe(takeUntilDestroyed(this.destroyRef))
-      .subscribe((params) => {
-        const id = Number(params.get('id'));
-        void this.loadCv(id);
-      });
+  id = signal<number>(0);
+
+  cvResource = resource<Cv | null, { id: number }>({
+    request: (): { id: number } => ({ id: this.id() }),
+    loader: ({ request }: { request: { id: number } }) => {
+      if (request.id <= 0) return Promise.resolve(null);
+      return this.cvService.getCvById(request.id);
+    },
+    defaultValue: null
+  });
+
+  cv = computed(() => this.cvResource.value());
+  isLoading = computed(() => this.cvResource.isLoading());
+  error = computed(() => this.cvResource.error());
+  status = computed(() => this.cvResource.status());
+  hasValidId = computed(() => this.id() > 0);
+
+  constructor() {
+    this.activatedRoute.paramMap.subscribe(params => {
+      const id = Number(params.get('id'));
+      this.id.set(id > 0 ? id : 0);
+    });
   }
 
   async deleteCv(cv: Cv): Promise<void> {
@@ -40,8 +57,7 @@ export class DetailsCvComponent implements OnInit {
     await this.router.navigate([APP_ROUTES.cv]);
   }
 
-  private async loadCv(id: number): Promise<void> {
-    this.cv = await this.cvService.getCvById(id);
-    this.cvService.selectCv(this.cv);
+  reloadCv(): void {
+    this.cvResource.reload();
   }
 }

@@ -10,8 +10,7 @@ import { TodoElementComponent } from './todoElement/todo-element.component';
     templateUrl: './todo.component.html',
     styleUrls: ['./todo.component.css'],
     providers: [TodoService],
-    standalone: true,
-    imports: [FormsModule,TodoElementComponent],
+    imports: [FormsModule, TodoElementComponent]
 })
 export class TodoComponent {
   private todoService = inject(TodoService);

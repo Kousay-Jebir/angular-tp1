@@ -1,4 +1,25 @@
-@if (cv) {
+<!-- États de chargement et d'erreur -->
+@if (isLoading()) {
+<div class="alert alert-info text-center">
+  <div class="spinner-border" role="status">
+    <span class="visually-hidden">Chargement...</span>
+  </div>
+  <p class="mt-2">Chargement du CV...</p>
+</div>
+}
+
+@if (error()) {
+<div class="alert alert-danger text-center">
+  <h4>Erreur</h4>
+  <p>Une erreur s'est produite lors du chargement du CV.</p>
+  <button (click)="reloadCv()" class="btn btn-warning">
+    Réessayer
+  </button>
+</div>
+}
+
+<!-- Affichage du CV quand il est chargé -->
+@if (cv(); as cv) {
 <div class="d-flex justify-content-center">
   <div class="col-lg-8 push-lg-4">
     <div class="tab-content p-b-3">
@@ -54,5 +75,24 @@
       </div>
     </div>
   </div>
+</div>
+}
+
+<!-- État "non trouvé" -->
+@if (status() === 2 && !cv() && hasValidId()) {
+<div class="alert alert-warning text-center">
+  <h4>CV non trouvé</h4>
+  <p>Le CV demandé n'existe pas ou a été supprimé.</p>
+  <a [routerLink]="['/cv']" class="btn btn-primary"> <!-- Simplifié -->
+    Retour à la liste
+  </a>
+</div>
+}
+
+<!-- État initial (avant tout chargement) -->
+@if (status() === 0 && !hasValidId()) {
+<div class="alert alert-secondary text-center">
+  <h4>Sélectionnez un CV</h4>
+  <p>Veuillez sélectionner un CV depuis la liste pour voir ses détails.</p>
 </div>
 }

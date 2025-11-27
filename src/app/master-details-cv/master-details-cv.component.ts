@@ -6,11 +6,10 @@ import { Cv } from '../cv/model/cv';
 import { ListComponent } from '../cv/list/list.component';
 
 @Component({
-  selector: 'app-master-details-cv',
-  standalone: true,
-  imports: [CommonModule, RouterModule, ListComponent],
-  templateUrl: './master-details-cv.component.html',
-  styleUrl: './master-details-cv.component.css',
+    selector: 'app-master-details-cv',
+    imports: [CommonModule, RouterModule, ListComponent],
+    templateUrl: './master-details-cv.component.html',
+    styleUrl: './master-details-cv.component.css'
 })
 export class MasterDetailsCvComponent implements OnInit, OnDestroy {
   private cvService = inject(CvService);

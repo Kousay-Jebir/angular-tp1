@@ -10,12 +10,11 @@ import { Cv } from '../model/cv';
 import { DefaultImagePipe } from '../pipes/default-image.pipe';
 
 @Component({
-  selector: 'app-item',
-  standalone: true,
-  imports: [NgStyle, DefaultImagePipe],
-  templateUrl: './item.component.html',
-  styleUrls: ['./item.component.css'],
-  changeDetection: ChangeDetectionStrategy.OnPush,
+    selector: 'app-item',
+    imports: [NgStyle, DefaultImagePipe],
+    templateUrl: './item.component.html',
+    styleUrls: ['./item.component.css'],
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ItemComponent {
   @Input({ required: true }) cv!: Cv;

@@ -10,18 +10,17 @@ import { EmbaucheComponent } from '../embauche/embauche.component';
 import { RouterModule } from '@angular/router';
 
 @Component({
-  selector: 'app-cv',
-  standalone: true,
-  templateUrl: './cv.component.html',
-  styleUrls: ['./cv.component.css'],
-  imports: [
-    CommonModule,
-    ListComponent,
-    CvCardComponent,
-    UpperCasePipe,
-    DatePipe,
-    RouterModule
-  ],
+    selector: 'app-cv',
+    templateUrl: './cv.component.html',
+    styleUrls: ['./cv.component.css'],
+    imports: [
+        CommonModule,
+        ListComponent,
+        CvCardComponent,
+        UpperCasePipe,
+        DatePipe,
+        RouterModule
+    ]
 })
 export class CvComponent implements OnInit {
   private toastr = inject(ToastrService);

@@ -2,11 +2,10 @@ import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
-  selector: 'app-ttc-result',
-  standalone: true,
-  imports: [CommonModule],
-  templateUrl: './ttc-result.component.html',
-  styleUrls: ['./ttc-result.component.css'],
+    selector: 'app-ttc-result',
+    imports: [CommonModule],
+    templateUrl: './ttc-result.component.html',
+    styleUrls: ['./ttc-result.component.css']
 })
 export class TtcResultComponent {
   @Input() label = '';

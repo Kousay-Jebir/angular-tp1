@@ -4,11 +4,10 @@ import { TtcInputComponent } from './ttc-input/ttc-input.component';
 import { TtcResultComponent } from './ttc-result/ttc-result.component';
 
 @Component({
-  selector: 'app-ttc',
-  standalone: true,
-  imports: [CommonModule, TtcInputComponent, TtcResultComponent],
-  templateUrl: './ttc.component.html',
-  styleUrls: ['./ttc.component.css'],
+    selector: 'app-ttc',
+    imports: [CommonModule, TtcInputComponent, TtcResultComponent],
+    templateUrl: './ttc.component.html',
+    styleUrls: ['./ttc.component.css']
 })
 export class TtcComponent {
   priceHT = signal(0);

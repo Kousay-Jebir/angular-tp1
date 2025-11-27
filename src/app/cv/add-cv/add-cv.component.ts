@@ -22,11 +22,10 @@ function cinAndAgeValidator(group: AbstractControl) {
 }
 
 @Component({
-  selector: 'app-add-cv',
-  standalone: true,
-  templateUrl: './add-cv.component.html',
-  styleUrls: ['./add-cv.component.css'],
-  imports: [CommonModule, ReactiveFormsModule, JsonPipe],
+    selector: 'app-add-cv',
+    templateUrl: './add-cv.component.html',
+    styleUrls: ['./add-cv.component.css'],
+    imports: [CommonModule, ReactiveFormsModule, JsonPipe]
 })
 export class AddCvComponent {
   private cvService = inject(CvService);
