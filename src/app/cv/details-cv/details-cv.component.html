@@ -78,16 +78,6 @@
 </div>
 }
 
-<!-- État "non trouvé" -->
-@if (status() === 2 && !cv() && hasValidId()) {
-<div class="alert alert-warning text-center">
-  <h4>CV non trouvé</h4>
-  <p>Le CV demandé n'existe pas ou a été supprimé.</p>
-  <a [routerLink]="['/cv']" class="btn btn-primary"> <!-- Simplifié -->
-    Retour à la liste
-  </a>
-</div>
-}
 
 <!-- État initial (avant tout chargement) -->
 @if (status() === 0 && !hasValidId()) {

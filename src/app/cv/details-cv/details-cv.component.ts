@@ -24,8 +24,6 @@ export class DetailsCvComponent {
   private activatedRoute = inject(ActivatedRoute);
   authService = inject(AuthService);
 
-  // Exposer APP_ROUTES dans le composant
-  APP_ROUTES = APP_ROUTES;
 
   id = signal<number>(0);
 
