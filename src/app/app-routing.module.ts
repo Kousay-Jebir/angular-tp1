@@ -30,6 +30,8 @@ const routes: Route[] = [
     }
   ]
   },
+  { path: 'cv/:id', component: DetailsCvComponent },
+
   {
     path: 'cv/master-details',
     component: MasterDetailsCvComponent,
