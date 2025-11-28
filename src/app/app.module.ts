@@ -51,6 +51,7 @@ import { ProductsComponent } from './products/products.component';
 import { ServiceWorkerModule } from '@angular/service-worker';
 import { AutocompleteComponent } from './cv/autocomplete/autocomplete.component';
 import { SliderComponent } from './rxjs/slider/slider.component';
+import { FiboPipe } from './pipes/fibo.pipe';
 
 @NgModule({
   declarations: [
@@ -88,6 +89,7 @@ import { SliderComponent } from './rxjs/slider/slider.component';
     TestHttpComponent,
     RhComponent,
     UserListComponent,
+    FiboPipe,
     ProductsComponent,
   ],
   bootstrap: [AppComponent],

@@ -15,6 +15,7 @@ import { RhComponent } from './optimizationPattern/rh/rh.component';
 import { RainbowPlaygroundComponent } from './components/rainbow-playground/rainbow-playground.component';
 import { TtcCalculatorComponent } from './ttc-calculator-rxjs/ttc-calculator.component';
 import { ProductsComponent } from './products/products.component';
+import { UserListComponent } from './optimizationPattern/user-list/user-list.component';
 
 const routes: Route[] = [
   { path: 'login', component: LoginComponent },
