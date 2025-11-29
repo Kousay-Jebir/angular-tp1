@@ -1,61 +1,48 @@
-import { Component, inject, signal, OnInit } from '@angular/core';
+import { Component, inject, computed, resource, signal } from '@angular/core';
 import { CommonModule, DatePipe, UpperCasePipe } from '@angular/common';
 import { ToastrService } from 'ngx-toastr';
 import { LoggerService } from '../../services/logger.service';
 import { CvService } from '../services/cv.service';
-import { Cv } from '../model/cv';
 import { ListComponent } from '../list/list.component';
 import { CvCardComponent } from '../cv-card/cv-card.component';
-import { EmbaucheComponent } from '../embauche/embauche.component';
 import { RouterModule } from '@angular/router';
+import { Cv } from '../model/cv';
 
 @Component({
-    selector: 'app-cv',
-    templateUrl: './cv.component.html',
-    styleUrls: ['./cv.component.css'],
-    imports: [
-        CommonModule,
-        ListComponent,
-        CvCardComponent,
-        UpperCasePipe,
-        DatePipe,
-        RouterModule
-    ]
+  selector: 'app-cv',
+  standalone: true,
+  imports: [
+    CommonModule,
+    ListComponent,
+    CvCardComponent,
+    UpperCasePipe,
+    DatePipe,
+    RouterModule,
+  ],
+  templateUrl: './cv.component.html',
+  styleUrls: ['./cv.component.css'],
 })
-export class CvComponent implements OnInit {
+export class CvComponent {
+  private cvService = inject(CvService);
   private toastr = inject(ToastrService);
   private logger = inject(LoggerService);
-  private cvService = inject(CvService);
-
-  cvs = signal<Cv[]>([]);
-  loading = signal(false);
-  error = signal<string | null>(null);
-  date = new Date();
-
-  async ngOnInit() {
-    this.toastr.info('Bienvenue dans CvTech');
-    this.logger.logger('je suis le component cv');
-    this.loading.set(true);
-    try {
-      const list = await this.cvService.getCvs();
-      this.cvs.set(list);
-      this.error.set(null);
-    } catch {
-      this.cvs.set(this.cvService.getFakeCvs());
-      this.error.set('Server error, using fake data');
-      this.toastr.error(
-        `Attention, données fictives, problème serveur. Contactez l’admin.`
-      );
-    } finally {
-      this.loading.set(false);
-    }
-  }
-
-  onSelect(cv: Cv) {
-    this.cvService.selectCv(cv);
-  }
+  cvsResource = resource({
+    loader: async () => {
+      this.toastr.info('Bienvenue dans CvTech');
+      this.logger.logger('je suis le component cv');
+      try {
+        const list = await this.cvService.getCvs();
+        this.toastr.info('CV chargés avec succès');
+        return list;
+      } catch {
+        this.toastr.error('Attention, données fictives, problème serveur.');
+        return this.cvService.getFakeCvs();
+      }
+    },
+  });
+  cvs = computed(() => this.cvsResource.value() ?? []);
   selectedCv = this.cvService.selectedCv;
   selectCv = (cv: Cv) => this.cvService.selectCv(cv);
-
   trackById = (_: number, cv: Cv) => cv.id;
+  date = new Date();
 }
